@@ -1,3 +1,5 @@
+using IOT.ETL.IRepository.ILOGIRepository;
+using IOT.ETL.Repository.ILOGRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +34,7 @@ namespace IOT.ETL.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IOT.ETL.Api", Version = "v1" });
             });
 
-
+            services.AddSingleton<ILOGIRepository, ILOGRepository>();
 
             //¿çÓò
             services.AddCors(options =>
