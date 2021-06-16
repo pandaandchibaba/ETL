@@ -12,20 +12,20 @@ namespace IOT.ETL.Model
         /// 数据关联表
         /// </summary>
         public string id { get; set; }
-        public string node_id { get; set; }
-        public string node_name { get; set; }
-        public string task_id { get; set; }
-        public string left_node_id { get; set; }
-        public string left_id { get; set; }
-        public string join_type { get; set; }
-        public string right_node_id { get; set; }
-        public string right_id { get; set; }
-        public string left_join_field { get; set; }
-        public string right_join_field { get; set; }
-        public int revision { get; set; }
-        public string create_by { get; set; }
-        public DateTime create_time { get; set; }
-        public string update_by { get; set; }
-        public DateTime update_time { get; set; }
+        public string node_id { get; set; }//节点ID
+        public string node_name { get; set; }//节点名称
+        public string task_id { get; set; }//任务ID
+        public string left_node_id { get; set; }//左节点ID
+        public string left_id { get; set; }//左表ID
+        public string join_type { get; set; }//关联方式
+        public string right_node_id { get; set; }//右表节点ID
+        public string right_id { get; set; }//右表ID
+        public string left_join_field { get; set; }//左表字段
+        public string right_join_field { get; set; }//右表字段
+        public int revision { get; set; }//乐观锁
+        public string create_by { get; set; }//创建人
+        public DateTime create_time { get; set; }//创建时间
+        public string update_by { get; set; }//更新人
+        public DateTime update_time { get; set; }//更新时间
     }
 }
