@@ -8,6 +8,9 @@ namespace IOT.ETL.Model
 {
     public class etl_task_info
     {
+        /// <summary>
+        /// 任务信息表
+        /// </summary>
         public string Id { get; set; }//'id',
         public string Name { get; set; }//任务名称
         public int Weight { get; set; }//任务权重级别 0紧急任务1高2中3低
