@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace IOT.ETL.Model
 {
+    /// <summary>
+    /// 参数字典表
+    /// </summary>
     public class sys_param
     {
         //主键id
