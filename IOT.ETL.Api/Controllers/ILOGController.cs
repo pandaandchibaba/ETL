@@ -30,13 +30,21 @@ namespace IOT.ETL.Api.Controllers
         //显示
         [Route("/api/ShowILOG")]
         [HttpGet]
-        public IActionResult ShowILOG(string nm = "")
+        public IActionResult ShowILOG(string nm1 = "", string nm2 = "", string nm3 = "")
         {
             //获取全部数据
             var ls = _iLOGIRepository.ShowILOG();
-            if (!string.IsNullOrEmpty(nm))
+            if (!string.IsNullOrEmpty(nm1))
             {
-                ls = ls.Where(x => x.engine_name.Contains(nm)).ToList();
+                ls = ls.Where(x => x.engine_name.Contains(nm1)).ToList();
+            }
+            if (!string.IsNullOrEmpty(nm2))
+            {
+                ls = ls.Where(x => x.code_type.Contains(nm2)).ToList();
+            }
+            if (!string.IsNullOrEmpty(nm3))
+            {
+                ls = ls.Where(x => x.cl_name.Contains(nm3)).ToList();
             }
             return Ok(new
             {
