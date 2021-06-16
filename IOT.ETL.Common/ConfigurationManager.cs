@@ -20,5 +20,13 @@ namespace IOT.ETL.Common
         {
             get { return Configuration.GetConnectionString("con"); }
         }
+        public static string ConnMySql
+        {
+            get { return Configuration.GetConnectionString("MySql"); }
+        }
+        public static string ConnSql
+        {
+            get { return Configuration.GetConnectionString("Sql"); }
+        }
     }
 }

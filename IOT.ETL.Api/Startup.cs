@@ -1,4 +1,6 @@
+using IOT.ETL.IRepository.IDataAnalysisRepository;
 using IOT.ETL.IRepository.ILOGIRepository;
+using IOT.ETL.Repository.DataAnalysisRepository;
 using IOT.ETL.Repository.ILOGRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,8 +38,9 @@ namespace IOT.ETL.Api
 
             #region ×¢Èë
             services.AddSingleton<ILOGIRepository, ILOGRepository>();
+            services.AddSingleton<IDataAnalysisRepository, DataAnalysisRepository>();
             #endregion
-            
+
 
             //¿çÓò
             services.AddCors(options =>
