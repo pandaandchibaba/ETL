@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IOT.ETL.IRepository.ISys_paramIRepository;
+using IOT.ETL.Repository.ISys_paramRepository;
 
 namespace IOT.ETL.Api
 {
@@ -35,6 +37,7 @@ namespace IOT.ETL.Api
             });
 
             services.AddSingleton<ILOGIRepository, ILOGRepository>();
+            services.AddSingleton<ISys_paramIRepository, ISys_paramRepository>();
 
             //¿çÓò
             services.AddCors(options =>
