@@ -41,5 +41,7 @@ namespace IOT.ETL.Model
         public DateTime Update_time { get; set; }
         //显示修改时间
         public string Update_times { get { return Update_time.ToString("yyyy-MM-dd HH:mm:ss"); } }
+        //父级名称
+        public string fname { get; set; }
     }
 }

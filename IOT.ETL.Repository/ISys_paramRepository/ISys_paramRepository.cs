@@ -37,7 +37,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
         {
             try
             {
-                string sql = $"INSERT INTO sys_param VALUES(UUID(),'{sys_Param.Code}','{sys_Param.Name}',{sys_Param.Pid},{sys_Param.Default_status},{sys_Param.Is_system},{sys_Param.Is_del},{sys_Param.Order_by},'{sys_Param.Text}','{sys_Param.Create_by}',NOW(),'{sys_Param.Update_by}',NOW())";
+                string sql = $"INSERT INTO sys_param VALUES(UUID(),'{sys_Param.Code}','{sys_Param.Name}','{sys_Param.Pid}',{sys_Param.Default_status},{sys_Param.Is_system},{sys_Param.Is_del},{sys_Param.Order_by},'{sys_Param.Text}','{sys_Param.Create_by}',NOW(),'{sys_Param.Update_by}',NOW())";
                 int i= DapperHelper.Execute(sql);
                 if (i>0)
                 {
@@ -121,14 +121,15 @@ namespace IOT.ETL.Repository.ISys_paramRepository
         /// <returns></returns>
         List<sys_param> ISys_paramIRepository.ShowSys_param()
         {
+            lst = null;
             try
             {
                 //判断缓存是否存在
                 if (lst == null || lst.Count == 0)
                 {
                     //不存在
-                    //按order_by排序
-                    lst = DapperHelper.GetList<IOT.ETL.Model.sys_param>("SELECT *FROM sys_param order by order_by");
+                    //按order_by排序  左连接 子节点在前 父节点在后
+                    lst = DapperHelper.GetList<IOT.ETL.Model.sys_param>("SELECT a.*,b.name fname FROM sys_param a LEFT  JOIN sys_param b on a.pid=b.id ORDER BY a.order_by");
                     rp.SetList(lst, redisKey);
                 }
                 return lst;
