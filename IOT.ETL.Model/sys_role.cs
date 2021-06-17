@@ -8,7 +8,7 @@ namespace IOT.ETL.Model
 {
     //角色表
     public class sys_role
-    { 
+    {
         public string id { get; set; }             //id
         public string role_name { get; set; }      //角色名称
         public int role_status { get; set; }       //角色状态 1正常0禁用

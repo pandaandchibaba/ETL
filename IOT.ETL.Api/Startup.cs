@@ -2,6 +2,8 @@ using IOT.ETL.IRepository.IDataAnalysisRepository;
 using IOT.ETL.IRepository.ILOGIRepository;
 using IOT.ETL.IRepository.UsersIRepository;
 using IOT.ETL.Repository.DataAnalysisRepository;
+using IOT.ETL.IRepository.ISys_paramIRepository;
+using IOT.ETL.Repository.ISys_paramRepository;
 using IOT.ETL.Repository.ILOGRepository;
 using IOT.ETL.Repository.UsersRepository;
 using Microsoft.AspNetCore.Builder;
@@ -16,6 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IOT.ETL.IRepository.sys_user;
+using IOT.ETL.Repository.sys_user;
+using IOT.ETL.IRepository.sys_role;
+using IOT.ETL.Repository.sys_role;
+using IOT.ETL.IRepository.sys_modules;
+using IOT.ETL.Repository.sys_modules;
 
 namespace IOT.ETL.Api
 {
@@ -42,7 +50,12 @@ namespace IOT.ETL.Api
             services.AddSingleton<ILOGIRepository, ILOGRepository>();
             services.AddSingleton<UsersIRepository, UsersRepository>();
             services.AddSingleton<IDataAnalysisRepository, DataAnalysisRepository>();
+            services.AddSingleton<ISys_paramIRepository, ISys_paramRepository>();
+            services.AddSingleton<IsysUserRepository, sysUserRepository>();
+            services.AddSingleton<IsysroleRespoditory, sysroleRespoditory>();
+            services.AddSingleton<IsysmodulesRepository, sysmodulesRepository>();
             #endregion
+
 
 
             //øÁ”Ú

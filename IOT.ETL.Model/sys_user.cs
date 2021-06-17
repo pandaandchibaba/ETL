@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace IOT.ETL.Model
 {
-    public class sys_user
+
+    /// <summary>
+    /// 用户表
+    /// </summary>
+   public class sys_user
     {
         public string id { get; set; }                   //id
         public string name { get; set; }                 //姓名
