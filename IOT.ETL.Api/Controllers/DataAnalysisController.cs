@@ -27,9 +27,9 @@ namespace IOT.ETL.Api.Controllers
         /// <param name="code"></param>
         /// <returns></returns>
         [HttpGet("/api/GetTable")]
-        public IActionResult GetTable(string sql, string dbName, int code = 0)
+        public IActionResult GetTable(string sql, string dbName, string code)
         {
-            return Ok(_dataAnalysis.GetTable(sql, dbName));
+            return Ok(_dataAnalysis.GetDateTable(sql, dbName,code));
         }
         #endregion
 

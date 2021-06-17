@@ -20,16 +20,29 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
         private string myTablekey= "myTable";
         //mysql的数据库值
         List<myDataBase> lstMydb = new List<myDataBase>();
+        //sql的数据库值
+        List<SqlDataBase> lstdb = new List<SqlDataBase>();
         //mysql的数据表值
         List<myTable> lstMyTb = new List<myTable>();
         //帮助文件
         RedisHelper<myDataBase> mdbH = new RedisHelper<myDataBase>();
         RedisHelper<myTable> mtH = new RedisHelper<myTable>();
+        RedisHelper<SqlDataBase> sdbH = new RedisHelper<SqlDataBase>();
+        #region 构造函数
+        /// <summary>
+        /// 初次加载取出
+        /// </summary>
         public DataAnalysisRepository()
         {
+            //mysql数据库
             lstMydb = mdbH.GetList(myDBkey);
+            //mysql数据表
             lstMyTb = mtH.GetList(myTablekey);
-        }
+            //SQL数据库
+            lstdb = sdbH.GetList(sqlDBkey);
+        } 
+        #endregion
+
         #region 绑定左侧树
         /// <summary>
         /// 绑定左侧树
@@ -42,7 +55,7 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
             #region MySql节点
             //实例化一个mysql跟节点
             Dictionary<string, object> myDic = new Dictionary<string, object>();
-            myDic.Add("id", "");
+            myDic.Add("id", "-1");
             myDic.Add("label", "MySql");
             //mysql的数据库
             if (lstMydb == null || lstMydb.Count == 0)
@@ -90,13 +103,53 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
             tree.Add(myDic);
             #endregion
 
+            #region SQL节点
             //实例化一个sql跟节点
-            //Dictionary<string, object> sqlDic = new Dictionary<string, object>();
-            //myDic.Add("id", "");
-            //myDic.Add("label", "Sql");
+            Dictionary<string, object> sqlDic = new Dictionary<string, object>();
+            sqlDic.Add("id", "-1");
+            sqlDic.Add("label", "Sql");
+            //sql的数据库
+            if (lstdb == null || lstdb.Count == 0)
+            {
+                //存入缓存
+                lstdb = SqlHelper.GetList<SqlDataBase>("select name,dbid from sysdatabases", "Day1");
+                sdbH.SetList(lstdb, sqlDBkey);
+            }
+            //存放mysql数据库节点
+            List<Dictionary<string, object>> treeSqldb = new List<Dictionary<string, object>>();
+            foreach (var db in lstdb)
+            {
+                //实例化一个数据库
+                Dictionary<string, object> dbDic = new Dictionary<string, object>();
+                dbDic.Add("id", "");
+                dbDic.Add("label", db.name);
+                //该数据库下的表
+                List<SqlTable> lstDbTb = SqlHelper.GetList<SqlTable>("select name from sysobjects where xtype='U'", db.name);
+                //存放mysql数据表节点
+                List<Dictionary<string, object>> treeMytb = new List<Dictionary<string, object>>();
+                foreach (var tb in lstDbTb)
+                {
+                    //实例化一个数据表
+                    Dictionary<string, object> tbDic = new Dictionary<string, object>();
+                    tbDic.Add("id", db.name);
+                    tbDic.Add("label", tb.name);
+                    tbDic.Add("children", null);
+                    //放入集合
+                    treeMytb.Add(tbDic);
+                }
+                //数据库下面的表
+                dbDic.Add("children", treeMytb);
+                //放入集合
+                treeSqldb.Add(dbDic);
+            }
+            sqlDic.Add("children", treeSqldb);
+            tree.Add(sqlDic);
+            #endregion
+
             return tree;
         } 
         #endregion
+
         #region 显示查询
         /// <summary>
         /// 显示查询
@@ -104,9 +157,16 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
         /// <param name="sql"></param>
         /// <param name="dbName"></param>
         /// <returns></returns>
-        public DataTable GetTable(string sql, string dbName,int code=0)
+        public string GetDateTable(string sql, string dbName,string code)
         {
-            return DapperHelper.GetTable(sql,dbName);
+            if (code=="MySql")  //mysql
+            {
+                return DapperHelper.GetMySqlDate(sql, dbName);
+            }
+            else  //sql
+            {
+                return SqlHelper.GetSqlDate(sql, dbName);
+            }
         }
         #endregion
     }

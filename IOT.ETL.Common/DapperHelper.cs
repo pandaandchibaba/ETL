@@ -4,6 +4,7 @@ using System.Linq;
 using MySql.Data.MySqlClient;
 using System.Data;
 using Dapper;
+using Newtonsoft.Json;
 
 namespace IOT.ETL.Common
 {
@@ -88,23 +89,21 @@ namespace IOT.ETL.Common
         }
         #endregion
 
-        #region DataTable
+        #region 获取MySql的数据
         /// <summary>
         /// DataTable
         /// </summary>
         /// <param name="sql">SQL语句</param>
         /// <param name="dbName">数据库名</param>
         /// <returns></returns>
-        public static DataTable GetTable(string sql,string dbName)
+        public static string GetMySqlDate(string sql,string dbName)
         {
             try
             {
                 using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnMySql+dbName))
                 {
-                    DataTable dt = new DataTable("etl_task_info");
-                    var reader = db.ExecuteReader(sql);
-                    dt.Load(reader);
-                    return dt;
+                    var reader = db.Query(sql);
+                    return JsonConvert.SerializeObject(reader);
                 }
             }
             catch (Exception)
