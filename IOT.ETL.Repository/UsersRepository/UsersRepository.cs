@@ -14,9 +14,9 @@ namespace IOT.ETL.Repository.UsersRepository
         //创建缓存关键字
         string UsersKey;
         //获取全部数据
-        List<Model.sys_user> list = new List<sys_user>();
+        List<Model.sys_user> list = new List<Model.sys_user>();
 
-        RedisHelper<Model.sys_user> rh = new RedisHelper<sys_user>();
+        RedisHelper<Model.sys_user> rh = new RedisHelper<Model.sys_user>();
         public UsersRepository()
         {
             UsersKey = "Users_list"; ;
@@ -32,7 +32,7 @@ namespace IOT.ETL.Repository.UsersRepository
         }
 
         //注册
-        public int AddUsers(sys_user a)
+        public int AddUsers(Model.sys_user a)
         {
             string sql = $"insert into sys_user values (uuid(),'{a.name}','{a.email}','{a.phone}','http://www.ejsedu.com/uploads/allimg/210303/101600V13_0.jpg','{a.username}','{a.password}',1,1,0,'高紫如',now(),'高紫如',now())";
             int i = DapperHelper.Execute(sql);
@@ -51,7 +51,7 @@ namespace IOT.ETL.Repository.UsersRepository
         }
         
         //获取所有用户信息
-        public List<sys_user> GetUsers()
+        public List<Model.sys_user> GetUsers()
         {
             try
             {
@@ -84,7 +84,7 @@ namespace IOT.ETL.Repository.UsersRepository
         }
 
         //添加用户
-        public int InsertUsers(sys_user a)
+        public int InsertUsers(Model.sys_user a)
         {
             string sql = $"insert into sys_user values (uuid(),'{a.name}','1111','{a.phone}','http://www.ejsedu.com/uploads/allimg/210303/101600V13_0.jpg','{a.username}','{a.password}',{a.is_admin},0,0,'高紫如',now(),'高紫如',now())";
             int i = DapperHelper.Execute(sql);
