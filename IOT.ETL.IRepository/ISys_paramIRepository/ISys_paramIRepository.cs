@@ -15,7 +15,7 @@ namespace IOT.ETL.IRepository.ISys_paramIRepository
         List<IOT.ETL.Model.sys_param> ShowSys_param();
 
         //删除
-        int DelSys_param(string id);
+        int DelSys_param(string ids);
 
         //修改
         int UptSys_param(IOT.ETL.Model.sys_param sys_Param);

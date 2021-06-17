@@ -49,9 +49,32 @@ namespace IOT.ETL.Api.Controllers
             int i = _sys_ParamIRepository.AddSys_param(sys_Param);
             return i;
         }
+        
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        [Route("/api/DelSys_param")]
+        [HttpDelete]
+        public int DelSys_param(string ids)
+        {
+            int i = _sys_ParamIRepository.DelSys_param(ids);
+            return i;
+        }
 
-
-
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        [Route("/api/UptSys_param")]
+        [HttpPut]
+        public int UptSys_param(IOT.ETL.Model.sys_param sys_Param)
+        {
+            int i = _sys_ParamIRepository.UptSys_param(sys_Param);
+            return i;
+        }
 
 
     }
