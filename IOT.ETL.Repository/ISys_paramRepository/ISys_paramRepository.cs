@@ -13,16 +13,21 @@ namespace IOT.ETL.Repository.ISys_paramRepository
     {
         //实例化帮助文件
         RedisHelper<Model.sys_param> rp = new RedisHelper<sys_param>();
+
         //定义缓存关键字
         string redisKey;
+
         // 获取全部数据
         List<IOT.ETL.Model.sys_param> lst = new List<sys_param>();
-        //构造函数
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public ISys_paramRepository()
         {
             redisKey = "sys_param_list";
             lst = rp.GetList(redisKey);
         }
+
         /// <summary>
         /// 添加
         /// </summary>
@@ -53,6 +58,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
             }
 
         }
+
         /// <summary>
         /// 删除
         /// </summary>
@@ -77,6 +83,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
             }
             return i;
         }
+
         /// <summary>
         /// 修改
         /// </summary>
@@ -107,6 +114,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
             }
             
         }
+
         /// <summary>
         /// 显示
         /// </summary>
@@ -132,5 +140,6 @@ namespace IOT.ETL.Repository.ISys_paramRepository
             }
            
         }
+
     }
 }

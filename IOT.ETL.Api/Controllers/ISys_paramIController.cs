@@ -41,7 +41,11 @@ namespace IOT.ETL.Api.Controllers
             });
         }
 
-        //添加
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="sys_Param"></param>
+        /// <returns></returns>
         [Route("/api/AddSys_param")]
         [HttpPost]
         public int AddSys_param(IOT.ETL.Model.sys_param sys_Param)
