@@ -1,4 +1,8 @@
+using IOT.ETL.IRepository.IDataAnalysisRepository;
 using IOT.ETL.IRepository.ILOGIRepository;
+using IOT.ETL.Repository.DataAnalysisRepository;
+using IOT.ETL.IRepository.ISys_paramIRepository;
+using IOT.ETL.Repository.ISys_paramRepository;
 using IOT.ETL.Repository.ILOGRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,8 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IOT.ETL.IRepository.ISys_paramIRepository;
-using IOT.ETL.Repository.ISys_paramRepository;
+
 
 namespace IOT.ETL.Api
 {
@@ -36,8 +39,13 @@ namespace IOT.ETL.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IOT.ETL.Api", Version = "v1" });
             });
 
+            #region ×¢Èë
             services.AddSingleton<ILOGIRepository, ILOGRepository>();
+            services.AddSingleton<IDataAnalysisRepository, DataAnalysisRepository>();
             services.AddSingleton<ISys_paramIRepository, ISys_paramRepository>();
+            #endregion
+
+
 
             //¿çÓò
             services.AddCors(options =>

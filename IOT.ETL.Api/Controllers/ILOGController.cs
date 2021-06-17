@@ -56,7 +56,7 @@ namespace IOT.ETL.Api.Controllers
 
         //删除
         [Route("/api/DelILOG")]
-        [HttpPost]
+        [HttpGet]
         public int DelILOG(string id)
         {
             int i = _iLOGIRepository.DelILOG(id);
