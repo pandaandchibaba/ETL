@@ -17,9 +17,15 @@ namespace IOT.ETL.IRepository.IDataAnalysisRepository
         /// <param name="sql"></param>
         /// <param name="dbName"></param>
         /// <returns></returns>
-        public DataTable GetTable(string sql, string dbName, int code = 0); 
+        public DataTable GetTable(string sql, string dbName, int code = 0);
         #endregion
 
-
+        #region 绑定树
+        /// <summary>
+        /// 绑定树
+        /// </summary>
+        /// <returns></returns>
+        public List<Dictionary<string, object>> BindTree();
+        #endregion
     }
 }

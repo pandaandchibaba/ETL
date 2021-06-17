@@ -16,13 +16,23 @@ namespace IOT.ETL.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public static List<T> GetList<T>(string sql, int code = 1)
+        public static List<T> GetList<T>(string sql,string dbName="", int code = 1)
         {
             try
             {
-                using (IDbConnection db = new MySqlConnection(ConfigurationManager.Conn))
+                if (string.IsNullOrEmpty(dbName))
                 {
-                    return db.Query<T>(sql).ToList();
+                    using (IDbConnection db = new MySqlConnection(ConfigurationManager.Conn))
+                    {
+                        return db.Query<T>(sql).ToList();
+                    }
+                }
+                else
+                {
+                    using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnMySql+dbName))
+                    {
+                        return db.Query<T>(sql).ToList();
+                    }
                 }
             }
             catch (Exception)
@@ -91,7 +101,7 @@ namespace IOT.ETL.Common
             {
                 using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnMySql+dbName))
                 {
-                    DataTable dt = new DataTable();
+                    DataTable dt = new DataTable("etl_task_info");
                     var reader = db.ExecuteReader(sql);
                     dt.Load(reader);
                     return dt;
