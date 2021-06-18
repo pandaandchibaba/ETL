@@ -22,7 +22,7 @@ namespace IOT.ETL.Common
                 i = Convert.ToInt32(rm.NextDouble() * 10);
                 str += i;
             }
-            string content = "谦讯科技提醒您：您正在使用邮箱安全验证服务，您本次操作的验证码是：" + str + ";有效期限为5分钟,请您正在5分钟内完成重置密码功能";
+            string content = "谦讯科技提醒您："+"\n"+"您正在使用邮箱安全验证服务，您本次操作的验证码是：" + str + ";有效期限为5分钟,请您正在5分钟内完成重置密码功能";
             //调用发送邮箱方法
             SendEmail1(email, "【谦讯科技】后台登录修改用户信息提示", content);//收件人邮箱，邮箱标题，邮箱内容 
 
@@ -48,15 +48,9 @@ namespace IOT.ETL.Common
             message.IsBodyHtml = true;
             // message.Bcc.Add(new MailAddress("tst@qq.com")); //可以添加多个收件人
             message.Body = mailContent;//邮件内容
-            message.Subject = mailSubject;//邮件主题
-                                          //Attachment 附件
-                                          //Attachment att = new Attachment(@"C:/hello.txt");
-                                          //message.Attachments.Add(att);//添加附件
-                                          //Console.WriteLine("Start Send Mail....");
-                                          //发送....
+            message.Subject = mailSubject;//邮件主题 
+            //发送....
             mailClient.Send(message); // 发送邮件
-
-
         }
     }
 }

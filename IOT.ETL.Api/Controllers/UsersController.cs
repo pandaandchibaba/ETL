@@ -7,7 +7,10 @@ using NLog;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace IOT.ETL.Api.Controllers
@@ -21,9 +24,10 @@ namespace IOT.ETL.Api.Controllers
         Logger logger = NLog.LogManager.GetCurrentClassLogger();//实例化
         private readonly IDatabase _redis;
 
-        public UsersController(UsersIRepository usersIRepository)
+        public UsersController(UsersIRepository usersIRepository,RedisHelper1 helper1)
         {
             _usersIRepository = usersIRepository;
+            _redis = helper1.GetDatabase();
         }
 
         //注册
@@ -134,31 +138,34 @@ namespace IOT.ETL.Api.Controllers
             }
         }
 
-        // 验证邮箱是否已经注册,若没有怎发送邮箱验证码
+        //验证邮箱是否已经注册,若没有怎发送邮箱验证码
         [HttpGet]
         [Route("/api/TestEmail")]
         public int TestEmail(string email)
         {
             try
             {
-                //获取所有数据
-                var list = _usersIRepository.GetUsers();
-                var ss = list.FirstOrDefault(x => x.email.Equals(email));
+                //获取所有数据  查询邮箱所在位置
+                var ss = _usersIRepository.GetUsers().FirstOrDefault(x => x.email.Equals(email));
                 //判断是否为空
                 if (ss == null)
                 {
                     return -1;//说明这个邮箱没有被注册
                 }
-
                 //调用发送验证码帮助类,并返回当前验证码
                 string code = EmailSender.SendCode(ss.email);
-                logger.Debug($"邮箱号：{email}，在" + DateTime.Now + "申请验证码");
+
+                logger.Debug($"邮箱号：{email}，在  " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "   申请验证码：" + code);
+
                 //发送验证码当前时间
                 var time = DateTime.Now;
+
                 //存储发送验证码的时间 
-                _redis.StringSet("sendTime", time.ToString());
+                _redis.StringSet("sendTime",time.ToString());
+
                 //存储验证码
                 _redis.StringSet("code", code);
+
                 //用来存储获取验证码时的邮箱号 
                 _redis.StringSet("getcodeEmail", email);
                 return 1;//发送成功
@@ -170,8 +177,7 @@ namespace IOT.ETL.Api.Controllers
             }
         }
 
-
-        //验证验证码
+        // 验证验证码
         [HttpGet]
         [Route("/api/TestCode")]
         public int TestCode(string email, string fcode)
@@ -179,13 +185,10 @@ namespace IOT.ETL.Api.Controllers
             try
             {
                 //邮箱
-                //string getcodeEmail= HttpContext.Session.GetString("getcodeEmail");
                 string getcodeEmail = _redis.StringGet("getcodeEmail");
                 //验证码
-                //string code= HttpContext.Session.GetString("code");
                 string code = _redis.StringGet("code");
                 //发送时间
-                //string sendTime = HttpContext.Session.GetString("sendTime");
                 string sendTime = _redis.StringGet("sendTime");
                 //判断
                 if (email != getcodeEmail)
@@ -202,11 +205,11 @@ namespace IOT.ETL.Api.Controllers
                 //获取当前时间
                 var Ntime = DateTime.Now;
                 var mins = (Ntime - Convert.ToDateTime(sendTime)).TotalMinutes;
-                if (mins > 5)
+                if (mins > 1)
                 {
                     return -3;
                 }
-                //验证码5分钟过期，判断是否超过
+                //验证码1分钟过期，判断是否超过
                 return 1;
             }
             catch (Exception)
@@ -215,5 +218,6 @@ namespace IOT.ETL.Api.Controllers
                 throw;
             }
         }
+
     }
 }

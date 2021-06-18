@@ -22,6 +22,7 @@ using IOT.ETL.IRepository.sys_role;
 using IOT.ETL.Repository.sys_role;
 using IOT.ETL.IRepository.sys_modules;
 using IOT.ETL.Repository.sys_modules;
+using IOT.ETL.Common;
 
 namespace IOT.ETL.Api
 {
@@ -53,7 +54,15 @@ namespace IOT.ETL.Api
             services.AddSingleton<IsysmodulesRepository, sysmodulesRepository>();
             #endregion
 
-
+            var section = Configuration.GetSection("Redis:Default");
+            //连接字符串
+            string _connectionString = section.GetSection("Connection").Value;
+            //实例名称
+            string _instanceName = section.GetSection("InstanceName").Value;
+            //默认数据库 
+            int _defaultDB = int.Parse(section.GetSection("DefaultDB").Value ?? "0");
+            services.AddSingleton(new RedisHelper1(_connectionString, _instanceName, _defaultDB));
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             //跨域
             services.AddCors(options =>
