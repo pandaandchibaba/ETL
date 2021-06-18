@@ -29,13 +29,20 @@ namespace IOT.ETL.Repository.UsersRepository
             UsersKey = "Users_list";
             VUsersKey = "VUsers_list";
         }
-
+        
         //登录
         public int LoginUsers(string username, string password)
         {
             string sql = $"select count(*) from sys_user where username='{username}' and password='{DESEncrypt.GetMd5Str(password)}'";
             var b = DapperHelper.Exescalar(sql);
             int i = Convert.ToInt32(b);
+            //将登录信息放入缓存
+            if (i > 0)
+            {
+                string sqll = $"select *from sys_user where username='{username}' and password='{password}'";
+                lstl = DapperHelper.GetList<Model.sys_user>(sqll);
+                rl.SetList(lstl, LoginKey);
+            }
             return i;
         }
 
@@ -57,7 +64,7 @@ namespace IOT.ETL.Repository.UsersRepository
                 return 0;
             }
         }
-        
+
         //获取所有用户信息
         public List<Model.V_user_role> GetUsers()
         {
@@ -76,7 +83,7 @@ namespace IOT.ETL.Repository.UsersRepository
                 throw;
             }
         }
-        
+
         //修改密码
         public int UptPwd(string email, string password)
         {

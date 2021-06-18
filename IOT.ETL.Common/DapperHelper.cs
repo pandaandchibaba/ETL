@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace IOT.ETL.Common
 {
-    public class DapperHelper
+    public  class DapperHelper
     {
         #region 获取数据
         /// <summary>
