@@ -18,7 +18,7 @@ namespace IOT.ETL.IRepository.UsersIRepository
         int LoginUsers(string username, string password);
 
         //获取所有用户信息
-        List<Model.sys_user> GetUsers();
+        List<Model.V_user_role> GetUsers();
 
         //重置密码
         int UptPwd(string email, string password);
