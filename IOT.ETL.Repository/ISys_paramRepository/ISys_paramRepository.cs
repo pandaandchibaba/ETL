@@ -13,12 +13,17 @@ namespace IOT.ETL.Repository.ISys_paramRepository
     {
         //实例化帮助文件
         RedisHelper<Model.sys_param> rp = new RedisHelper<sys_param>();
-
+        RedisHelper<Model.sys_user> rl = new RedisHelper<Model.sys_user>();
         //定义缓存关键字
         string redisKey;
-
+        //创建登录缓存关键字
+        string LoginKey;
         // 获取全部数据
         List<IOT.ETL.Model.sys_param> lst = new List<sys_param>();
+        
+        //登录集合
+        List<Model.sys_user> lstl = new List<Model.sys_user>();
+        
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -26,6 +31,8 @@ namespace IOT.ETL.Repository.ISys_paramRepository
         {
             redisKey = "sys_param_list";
             lst = rp.GetList(redisKey);
+            LoginKey = "Login_list";
+            lstl = rl.GetList(LoginKey);
         }
 
         /// <summary>
@@ -37,7 +44,9 @@ namespace IOT.ETL.Repository.ISys_paramRepository
         {
             try
             {
-                string sql = $"INSERT INTO sys_param VALUES(UUID(),'{sys_Param.Code}','{sys_Param.Name}','{sys_Param.Pid}',{sys_Param.Default_status},{sys_Param.Is_system},{sys_Param.Is_del},{sys_Param.Order_by},'{sys_Param.Text}','{sys_Param.Create_by}',NOW(),'{sys_Param.Update_by}',NOW())";
+                //从缓存中取登录用户信息
+                Model.sys_user sys_User = lstl.FirstOrDefault();
+                string sql = $"INSERT INTO sys_param VALUES(UUID(),'{sys_Param.Code}','{sys_Param.Name}','{sys_Param.Pid}',{sys_Param.Default_status},{sys_Param.Is_system},{sys_Param.Is_del},{sys_Param.Order_by},'{sys_Param.Text}','{sys_User.name}',NOW(),'{sys_User.name}',NOW())";
                 int i= DapperHelper.Execute(sql);
                 if (i>0)
                 {
@@ -93,7 +102,9 @@ namespace IOT.ETL.Repository.ISys_paramRepository
         {
             try
             {
-                string sql = $"UPDATE sys_param SET code='{sys_Param.Code}',name='{sys_Param.Name}',is_system={sys_Param.Is_system},default_status={sys_Param.Default_status},order_by={sys_Param.Order_by},text='{sys_Param.Text}',update_by='{sys_Param.Update_by}',update_time=NOW()  WHERE id='{sys_Param.Id}'";
+                //从缓存中取登录用户信息
+                Model.sys_user sys_User = lstl.FirstOrDefault();
+                string sql = $"UPDATE sys_param SET code='{sys_Param.Code}',name='{sys_Param.Name}',is_system={sys_Param.Is_system},default_status={sys_Param.Default_status},order_by={sys_Param.Order_by},text='{sys_Param.Text}',update_by='{sys_User.name}',update_time=NOW()  WHERE id='{sys_Param.Id}'";
                 int i = DapperHelper.Execute(sql);
                 if (i>0)
                 {
