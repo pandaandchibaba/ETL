@@ -1,9 +1,10 @@
-using IOT.ETL.IRepository.IDataAnalysisRepository;
+ï»¿using IOT.ETL.IRepository.Ietl_task_info;
 using IOT.ETL.IRepository.ILOGIRepository;
 using IOT.ETL.IRepository.UsersIRepository;
 using IOT.ETL.Repository.DataAnalysisRepository;
 using IOT.ETL.IRepository.ISys_paramIRepository;
 using IOT.ETL.Repository.ISys_paramRepository;
+using IOT.ETL.Repository.etl_task_info;
 using IOT.ETL.Repository.ILOGRepository;
 using IOT.ETL.Repository.UsersRepository;
 using Microsoft.AspNetCore.Builder;
@@ -46,7 +47,7 @@ namespace IOT.ETL.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IOT.ETL.Api", Version = "v1" });
             });
 
-            #region ×¢Èë
+            #region ×¢ï¿½ï¿½
             services.AddSingleton<ILOGIRepository, ILOGRepository>();
             services.AddSingleton<UsersIRepository, UsersRepository>();
             services.AddSingleton<IDataAnalysisRepository, DataAnalysisRepository>();
@@ -54,11 +55,12 @@ namespace IOT.ETL.Api
             services.AddSingleton<IsysUserRepository, sysUserRepository>();
             services.AddSingleton<IsysroleRespoditory, sysroleRespoditory>();
             services.AddSingleton<IsysmodulesRepository, sysmodulesRepository>();
+            services.AddSingleton<Ietl_task_infoRepository, etl_task_infoRepository>();
             #endregion
 
 
 
-            //¿çÓò
+            //ï¿½ï¿½ï¿½ï¿½
             services.AddCors(options =>
             options.AddPolicy("cors",
             p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
