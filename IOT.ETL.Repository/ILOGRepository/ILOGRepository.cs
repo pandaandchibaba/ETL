@@ -23,12 +23,12 @@ namespace IOT.ETL.Repository.ILOGRepository
         //获取规则引擎视图的全部数据
         List<IOT.ETL.Model.V_IOLG> list2 = new List<V_IOLG>();
         //获取登录的数据
-        List<Model.sys_user> users = new List<sys_user>();
+        List<Model.sys_user> users = new List<Model.sys_user>();
 
         //实例化规则引擎的redis
         RedisHelper<Model.etl_data_engine> rh = new RedisHelper<etl_data_engine>();
         //实例化登录的redis
-        RedisHelper<Model.sys_user> loginh = new RedisHelper<sys_user>();
+        RedisHelper<Model.sys_user> loginh = new RedisHelper<Model.sys_user>();
         //实例化规则引擎视图的redis
         RedisHelper<Model.V_IOLG> rh2 = new RedisHelper<V_IOLG>();
 
