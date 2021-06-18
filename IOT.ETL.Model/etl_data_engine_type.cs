@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IOT.ETL.Model
 {
-    //-- 规则引擎类型表
+    //规则引擎类型表
     public class etl_data_engine_type
     {
         public string id { get; set; }           //id

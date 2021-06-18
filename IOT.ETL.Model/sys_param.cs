@@ -33,9 +33,15 @@ namespace IOT.ETL.Model
         public string Create_by { get; set; }
         //创建时间
         public DateTime Create_time { get; set; }
+        //显示创建时间
+        public string Create_times { get { return Create_time.ToString("yyyy-MM-dd HH:mm:ss");} }
         //修改人 （默认为创建人）
         public string Update_by { get; set; }
         //修改时间 （默认为创建时间）
         public DateTime Update_time { get; set; }
+        //显示修改时间
+        public string Update_times { get { return Update_time.ToString("yyyy-MM-dd HH:mm:ss"); } }
+        //父级名称
+        public string fname { get; set; }
     }
 }
