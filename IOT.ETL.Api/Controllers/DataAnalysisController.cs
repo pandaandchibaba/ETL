@@ -18,6 +18,7 @@ namespace IOT.ETL.Api.Controllers
             _dataAnalysis = dataAnalysis;
         }
 
+        #region 显示
         /// <summary>
         /// 显示查询
         /// </summary>
@@ -26,9 +27,22 @@ namespace IOT.ETL.Api.Controllers
         /// <param name="code"></param>
         /// <returns></returns>
         [HttpGet("/api/GetTable")]
-        public IActionResult GetTable(string sql,string dbName,int code=1)
+        public IActionResult GetTable(string sql, string dbName, string code)
         {
-            return Ok(_dataAnalysis.GetTable(sql, dbName));
+            return Ok(_dataAnalysis.GetDateTable(sql, dbName,code));
         }
+        #endregion
+
+        #region 绑定左侧树
+        /// <summary>
+        /// 绑定左侧树
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("/api/BindLeftTree")]
+        public IActionResult BindLeftTree()
+        {
+            return Ok(_dataAnalysis.BindTree());
+        }
+        #endregion
     }
 }
