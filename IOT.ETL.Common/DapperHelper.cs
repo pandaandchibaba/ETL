@@ -7,7 +7,7 @@ using Dapper;
 
 namespace IOT.ETL.Common
 {
-    public class DapperHelper
+    public  class DapperHelper
     {
         /// <summary>
         /// 获取数据
@@ -15,7 +15,7 @@ namespace IOT.ETL.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public static List<T> GetList<T>(string sql)
+        public  static List<T> GetList<T>(string sql)
         {
             try
             {

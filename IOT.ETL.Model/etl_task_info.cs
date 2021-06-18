@@ -33,7 +33,10 @@ namespace IOT.ETL.Model
         public int Revision { get; set; }//乐观锁
         public string Create_by { get; set; }//创建人
         public DateTime Create_time { get; set; }//创建时间
+        public string Create_times { get { return Create_time.ToString("F"); } }//创建时间
+
         public string Update_by { get; set; }//更新人
         public DateTime Update_time { get; set; }//更新时间
+        public string Update_times { get { return Update_time.ToString("F"); } }//更新时间
     }
 }

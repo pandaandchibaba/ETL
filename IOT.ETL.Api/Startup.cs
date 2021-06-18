@@ -1,4 +1,6 @@
+using IOT.ETL.IRepository.Ietl_task_info;
 using IOT.ETL.IRepository.ILOGIRepository;
+using IOT.ETL.Repository.etl_task_info;
 using IOT.ETL.Repository.ILOGRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +38,7 @@ namespace IOT.ETL.Api
 
             #region ×¢Èë
             services.AddSingleton<ILOGIRepository, ILOGRepository>();
+            services.AddSingleton<Ietl_task_infoRepository, etl_task_infoRepository>();
             #endregion
             
 
