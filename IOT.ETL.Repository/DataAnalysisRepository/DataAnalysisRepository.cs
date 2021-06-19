@@ -55,8 +55,9 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
             #region MySql节点
             //实例化一个mysql跟节点
             Dictionary<string, object> myDic = new Dictionary<string, object>();
-            myDic.Add("id", "-1");
+            myDic.Add("id", "");
             myDic.Add("label", "MySql");
+            myDic.Add("floor", 1);
             //mysql的数据库
             if (lstMydb == null || lstMydb.Count == 0)
             {
@@ -79,6 +80,7 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
                 Dictionary<string, object> dbDic = new Dictionary<string, object>();
                 dbDic.Add("id", "");
                 dbDic.Add("label", db.Database);
+                dbDic.Add("floor", 2);
                 //该数据库下的表
                 List<myTable> lstDbTb = lstMyTb.Where(x => x.Table_Schema == db.Database).ToList();
                 //存放mysql数据表节点
@@ -89,6 +91,7 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
                     Dictionary<string, object> tbDic = new Dictionary<string, object>();
                     tbDic.Add("id", tb.Table_Schema);
                     tbDic.Add("label", tb.Table_Name);
+                    tbDic.Add("floor", 3);
                     tbDic.Add("children", null);
                     //放入集合
                     treeMytb.Add(tbDic);
@@ -106,8 +109,9 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
             #region SQL节点
             //实例化一个sql跟节点
             Dictionary<string, object> sqlDic = new Dictionary<string, object>();
-            sqlDic.Add("id", "-1");
+            sqlDic.Add("id", "");
             sqlDic.Add("label", "Sql");
+            sqlDic.Add("floor", 1);
             //sql的数据库
             if (lstdb == null || lstdb.Count == 0)
             {
@@ -123,6 +127,7 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
                 Dictionary<string, object> dbDic = new Dictionary<string, object>();
                 dbDic.Add("id", "");
                 dbDic.Add("label", db.name);
+                dbDic.Add("floor", 2);
                 //该数据库下的表
                 List<SqlTable> lstDbTb = SqlHelper.GetList<SqlTable>("select name from sysobjects where xtype='U'", db.name);
                 //存放mysql数据表节点
@@ -133,6 +138,7 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
                     Dictionary<string, object> tbDic = new Dictionary<string, object>();
                     tbDic.Add("id", db.name);
                     tbDic.Add("label", tb.name);
+                    tbDic.Add("floor", 3);
                     tbDic.Add("children", null);
                     //放入集合
                     treeMytb.Add(tbDic);

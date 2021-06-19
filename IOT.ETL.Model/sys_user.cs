@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace IOT.ETL.Model
 {
-
     /// <summary>
     /// 用户表
     /// </summary>
