@@ -25,6 +25,7 @@ using IOT.ETL.IRepository.sys_role;
 using IOT.ETL.Repository.sys_role;
 using IOT.ETL.IRepository.sys_modules;
 using IOT.ETL.Repository.sys_modules;
+using IOT.ETL.IRepository.IDataAnalysisRepository;
 
 namespace IOT.ETL.Api
 {
