@@ -86,7 +86,7 @@ namespace IOT.ETL.Api.Controllers
         }
         [Route("/api/insertetl_Task_Infos")]
         [HttpPost]
-        public int insertetl_Task_Infos(Model.etl_task_info _etl_Task_Info)
+        public int insertetl_Task_Infos([FromForm]Model.etl_task_info _etl_Task_Info)
         {
             try
             {

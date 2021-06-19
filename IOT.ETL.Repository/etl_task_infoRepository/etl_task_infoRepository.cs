@@ -58,11 +58,13 @@ namespace IOT.ETL.Repository.etl_task_info
         /// <returns></returns>
         public List<Model.etl_task_info> Getetl_Task_Infos(string name, int weight, int process_status)
         {
+            lt = null;
             try
+
             {
                 if (lt == null || lt.Count == 0)
                 {
-                    string sql = $"select id,name,weight,process_json from etl_task_info";
+                    string sql = $"select * from etl_task_info";
 
                     lt = DapperHelper.GetList<Model.etl_task_info>(sql);
                     rd.SetList(lt, redisKey);
@@ -82,11 +84,12 @@ namespace IOT.ETL.Repository.etl_task_info
         /// <returns></returns>
         public  List<Model.etl_task_info> Getetl_Task_Infoslist()
         {
+            lt = null;
             try
             {
                 if (lt == null || lt.Count == 0)
                 {
-                    string sql = "select * from etl_task_info";
+                    string sql = "select * from etl_task_info ";
                    lt= DapperHelper.GetList<Model.etl_task_info>(sql);
                     rd.SetList(lt, redisKey);
                 }
@@ -100,7 +103,7 @@ namespace IOT.ETL.Repository.etl_task_info
             }
             
         }
-         
+
         public int insertetl_Task_Infos(Model.etl_task_info _etl_Task_Info)
         {
             string guid= Guid.NewGuid().ToString();
