@@ -24,6 +24,7 @@ using IOT.ETL.Repository.sys_role;
 using IOT.ETL.IRepository.sys_modules;
 using IOT.ETL.Repository.sys_modules;
 using IOT.ETL.Common;
+using IOT.ETL.IRepository.IDataAnalysisRepository;
 
 namespace IOT.ETL.Api
 {
@@ -46,7 +47,7 @@ namespace IOT.ETL.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IOT.ETL.Api", Version = "v1" });
             });
 
-            #region ×¢ï¿½ï¿½
+            #region 
             services.AddSingleton<ILOGIRepository, ILOGRepository>();
             services.AddSingleton<UsersIRepository, UsersRepository>();
             services.AddSingleton<IDataAnalysisRepository, DataAnalysisRepository>();
@@ -57,16 +58,13 @@ namespace IOT.ETL.Api
             #endregion
 
             var section = Configuration.GetSection("Redis:Default");
-            //Á¬½Ó×Ö·û´®
             string _connectionString = section.GetSection("Connection").Value;
-            //ÊµÀýÃû³Æ
             string _instanceName = section.GetSection("InstanceName").Value;
-            //Ä¬ÈÏÊý¾Ý¿â 
             int _defaultDB = int.Parse(section.GetSection("DefaultDB").Value ?? "0");
             services.AddSingleton(new RedisHelper1(_connectionString, _instanceName, _defaultDB));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            //ï¿½ï¿½ï¿½ï¿½
+            
             services.AddCors(options =>
             options.AddPolicy("cors",
             p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));

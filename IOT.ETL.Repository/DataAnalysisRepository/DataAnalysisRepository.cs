@@ -116,7 +116,7 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
             if (lstdb == null || lstdb.Count == 0)
             {
                 //存入缓存
-                lstdb = SqlHelper.GetList<SqlDataBase>("select name,dbid from sysdatabases", "Day1");
+                lstdb = SqlHelper.GetList<SqlDataBase>("select name,dbid from sysdatabases", "master");
                 sdbH.SetList(lstdb, sqlDBkey);
             }
             //存放mysql数据库节点
