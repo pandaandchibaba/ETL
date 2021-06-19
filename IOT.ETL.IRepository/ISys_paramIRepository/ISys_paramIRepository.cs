@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IOT.ETL.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,7 @@ namespace IOT.ETL.IRepository.ISys_paramIRepository
         int AddSys_param(IOT.ETL.Model.sys_param sys_Param);
 
         //显示
-        List<IOT.ETL.Model.sys_param> ShowSys_param();
-
+        List<IOT.ETL.Model.sys_param> ShowSys_param(string pid);
         //删除
         int DelSys_param(string ids);
 

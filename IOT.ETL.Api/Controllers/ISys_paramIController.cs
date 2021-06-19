@@ -29,10 +29,10 @@ namespace IOT.ETL.Api.Controllers
         /// <returns></returns>
         [Route("/api/ShowSys_param")]
         [HttpGet]
-        public IActionResult ShowSys_param()
+        public IActionResult ShowSys_param(string pid=null)
         {
             //获取全部数据
-            List<IOT.ETL.Model.sys_param> sys_Params = _sys_ParamIRepository.ShowSys_param();
+            List<IOT.ETL.Model.sys_param> sys_Params = _sys_ParamIRepository.ShowSys_param(pid);
             return Ok(new
             {
                 msg = "",

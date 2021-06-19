@@ -20,10 +20,10 @@ namespace IOT.ETL.Repository.ISys_paramRepository
         string LoginKey;
         // 获取全部数据
         List<IOT.ETL.Model.sys_param> lst = new List<sys_param>();
-        
+
         //登录集合
         List<Model.sys_user> lstl = new List<Model.sys_user>();
-        
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -47,8 +47,8 @@ namespace IOT.ETL.Repository.ISys_paramRepository
                 //从缓存中取登录用户信息
                 Model.sys_user sys_User = lstl.FirstOrDefault();
                 string sql = $"INSERT INTO sys_param VALUES(UUID(),'{sys_Param.Code}','{sys_Param.Name}','{sys_Param.Pid}',{sys_Param.Default_status},{sys_Param.Is_system},{sys_Param.Is_del},{sys_Param.Order_by},'{sys_Param.Text}','{sys_User.name}',NOW(),'{sys_User.name}',NOW())";
-                int i= DapperHelper.Execute(sql);
-                if (i>0)
+                int i = DapperHelper.Execute(sql);
+                if (i > 0)
                 {
                     sys_Param = DapperHelper.GetList<Model.sys_param>("SELECT *FROM sys_param ORDER BY create_time DESC LIMIT 1").FirstOrDefault();
                     lst.Add(sys_Param);
@@ -77,7 +77,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
         {
             string sql = $"DELETE FROM sys_param WHERE id in('{ids}')";
             int i = DapperHelper.Execute(sql);
-            if (i>0)
+            if (i > 0)
             {
                 //截取
                 string[] arr = ids.Split(',');
@@ -106,7 +106,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
                 Model.sys_user sys_User = lstl.FirstOrDefault();
                 string sql = $"UPDATE sys_param SET code='{sys_Param.Code}',name='{sys_Param.Name}',is_system={sys_Param.Is_system},default_status={sys_Param.Default_status},order_by={sys_Param.Order_by},text='{sys_Param.Text}',update_by='{sys_User.name}',update_time=NOW()  WHERE id='{sys_Param.Id}'";
                 int i = DapperHelper.Execute(sql);
-                if (i>0)
+                if (i > 0)
                 {
                     lst[lst.IndexOf(lst.First(x => x.Id == sys_Param.Id))] = sys_Param;
                     //从新存入
@@ -123,14 +123,14 @@ namespace IOT.ETL.Repository.ISys_paramRepository
 
                 throw;
             }
-            
+
         }
 
         /// <summary>
         /// 显示
         /// </summary>
         /// <returns></returns>
-        List<sys_param> ISys_paramIRepository.ShowSys_param()
+        List<sys_param> ISys_paramIRepository.ShowSys_param(string pid)
         {
             lst = null;
             try
@@ -138,9 +138,18 @@ namespace IOT.ETL.Repository.ISys_paramRepository
                 //判断缓存是否存在
                 if (lst == null || lst.Count == 0)
                 {
+                    lst = DapperHelper.GetList<IOT.ETL.Model.sys_param>("SELECT *FROM sys_param WHERE pid='0' ORDER BY order_by");
                     //不存在
                     //按order_by排序  左连接 子节点在前 父节点在后
-                    lst = DapperHelper.GetList<IOT.ETL.Model.sys_param>("SELECT a.*,b.name fname FROM sys_param a LEFT  JOIN sys_param b on a.pid=b.id ORDER BY a.order_by");
+                    if (pid != "0" || pid != null||!string.IsNullOrEmpty(pid))
+                    {
+                        List<Model.sys_param> ls = DapperHelper.GetList<IOT.ETL.Model.sys_param>($"SELECT *FROM sys_param WHERE pid='{pid}' ORDER BY order_by");
+                        //循环将查询到的子节点放入到缓存的集合里面
+                        foreach (var item in ls)
+                        {
+                            lst.Add(item);
+                        }
+                    }
                     rp.SetList(lst, redisKey);
                 }
                 return lst;
@@ -150,7 +159,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
 
                 throw;
             }
-           
+
         }
 
     }
