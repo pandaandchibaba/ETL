@@ -43,14 +43,22 @@ namespace IOT.ETL.Api.Controllers
         [HttpGet]
         public IActionResult ShowSys_param(string pid=null)
         {
-            //获取全部数据
-            List<IOT.ETL.Model.sys_param> sys_Params = _sys_ParamIRepository.ShowSys_param(pid);
-            return Ok(new
+            try
             {
-                msg = "",
-                code = 0,
-                data = sys_Params
-            });
+                //获取全部数据
+                List<IOT.ETL.Model.sys_param> sys_Params = _sys_ParamIRepository.ShowSys_param(pid);
+                return Ok(new
+                {
+                    msg = "",
+                    code = 0,
+                    data = sys_Params
+                });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
