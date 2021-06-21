@@ -21,10 +21,18 @@ namespace IOT.ETL.Repository.UsersRepository
         List<Model.V_user_role> Vlist = new List<Model.V_user_role>();
         RedisHelper<Model.V_user_role> Vrh = new RedisHelper<Model.V_user_role>();
 
+        //创建登录缓存关键字
+        string LoginKey;
+        List<Model.sys_user> lstl = new List<Model.sys_user>();
+        RedisHelper<Model.sys_user> rl = new RedisHelper<Model.sys_user>();
+
         public UsersRepository()
         {
             UsersKey = "Users_list";
             list = rh.GetList(UsersKey);
+
+            LoginKey = "Login_list";
+            lstl = rl.GetList(LoginKey);
 
             VUsersKey = "VUsers_list";
             Vlist = Vrh.GetList(VUsersKey);
@@ -41,7 +49,7 @@ namespace IOT.ETL.Repository.UsersRepository
             {
                 string sqll = $"select *from sys_user where username='{username}' and password='{password}'";
                 list = DapperHelper.GetList<Model.sys_user>(sqll);
-                rh.SetList(list, UsersKey);
+                rh.SetList(list, LoginKey);
             }
             return i;
         }
