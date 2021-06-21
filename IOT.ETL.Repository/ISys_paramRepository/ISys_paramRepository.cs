@@ -20,7 +20,6 @@ namespace IOT.ETL.Repository.ISys_paramRepository
         string LoginKey;
         // 获取全部数据
         List<IOT.ETL.Model.sys_param> lst = new List<sys_param>();
-
         //登录集合
         List<Model.sys_user> lstl = new List<Model.sys_user>();
 
