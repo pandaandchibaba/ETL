@@ -48,8 +48,8 @@ namespace IOT.ETL.Repository.UsersRepository
             if (i > 0)
             {
                 string sqll = $"select *from sys_user where username='{username}' and password='{password}'";
-                list = DapperHelper.GetList<Model.sys_user>(sqll);
-                rh.SetList(list, LoginKey);
+                lstl = DapperHelper.GetList<Model.sys_user>(sqll);
+                rl.SetList(lstl, LoginKey);
             }
             return i;
         }
