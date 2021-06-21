@@ -47,9 +47,9 @@ namespace IOT.ETL.Repository.UsersRepository
             //将登录信息放入缓存
             if (i > 0)
             {
-                string sqll = $"select *from sys_user where username='{username}' and password='{password}'";
-                list = DapperHelper.GetList<Model.sys_user>(sqll);
-                rh.SetList(list, LoginKey);
+                string sqll = $"select *from sys_user where username='{username}' and password='{DESEncrypt.GetMd5Str(password)}'";
+                lstl = DapperHelper.GetList<Model.sys_user>(sqll);
+                rl.SetList(lstl, LoginKey);
             }
             return i;
         }

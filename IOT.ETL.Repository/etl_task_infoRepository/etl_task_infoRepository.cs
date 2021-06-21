@@ -1,5 +1,6 @@
 ﻿using IOT.ETL.Common;
 using IOT.ETL.IRepository.Ietl_task_info;
+using IOT.ETL.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,12 @@ namespace IOT.ETL.Repository.etl_task_info
             redisKey = "etl_task_info_list";//redis名称
             lt = rd.GetList(redisKey);//存放
         }
+
+        public List<T> dbtable<T>()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 删除
         /// </summary>
@@ -119,6 +126,16 @@ namespace IOT.ETL.Repository.etl_task_info
             {
                 return 0;
             }
+        }
+
+        public int insertsql()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<myTable> myTables()
+        {
+            throw new NotImplementedException();
         }
     }
 }

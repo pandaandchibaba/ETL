@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IOT.ETL.Model
 {
-    class etl_task_line_info
+    public class etl_task_line_info
     {
         /// <summary>
         /// 处理信息连接表
