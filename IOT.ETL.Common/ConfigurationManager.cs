@@ -28,5 +28,7 @@ namespace IOT.ETL.Common
         {
             get { return Configuration.GetConnectionString("Sql"); }
         }
+
+        public static object AppSettings { get; internal set; }
     }
 }

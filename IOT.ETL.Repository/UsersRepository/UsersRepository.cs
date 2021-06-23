@@ -47,7 +47,7 @@ namespace IOT.ETL.Repository.UsersRepository
             //将登录信息放入缓存
             if (i > 0)
             {
-                string sqll = $"select *from sys_user where username='{username}' and password='{password}'";
+                string sqll = $"select *from sys_user where username='{username}' and password='{DESEncrypt.GetMd5Str(password)}'";
                 list = DapperHelper.GetList<Model.sys_user>(sqll);
                 rh.SetList(list, LoginKey);
             }
@@ -95,11 +95,19 @@ namespace IOT.ETL.Repository.UsersRepository
             }
         }
 
-        //修改密码
+        //邮箱修改密码
         public int UptPwd(string email, string password)
         {
             string sql = $"update sys_user set password='{DESEncrypt.GetMd5Str(password)}' where email = '{email}'";
             int i =  DapperHelper.Execute(sql);
+            return i;
+        }
+
+        //电话修改密码
+        public int UptPhone(string phone, string password)
+        {
+            string sql = $"update sys_user set password='{DESEncrypt.GetMd5Str(password)}' where phone = '{phone}'";
+            int i = DapperHelper.Execute(sql);
             return i;
         }
 

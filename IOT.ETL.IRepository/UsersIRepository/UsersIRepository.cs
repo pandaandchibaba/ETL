@@ -23,6 +23,8 @@ namespace IOT.ETL.IRepository.UsersIRepository
         //重置密码
         int UptPwd(string email, string password);
 
+        int UptPhone(string phone, string password);
+
         //删除
         int DelUsers(string id);
     }
