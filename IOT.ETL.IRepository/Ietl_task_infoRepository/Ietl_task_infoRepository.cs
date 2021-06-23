@@ -18,6 +18,5 @@ namespace IOT.ETL.IRepository.Ietl_task_info
         //添加名称和任务权重(szh)
         int insertetl_Task_Infos(Model.etl_task_info _etl_Task_Info);
 
-
     }
 }

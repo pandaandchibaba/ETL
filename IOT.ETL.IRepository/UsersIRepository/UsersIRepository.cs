@@ -27,5 +27,23 @@ namespace IOT.ETL.IRepository.UsersIRepository
 
         //删除
         int DelUsers(string id);
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        int Uptuser(IOT.ETL.Model.sys_user a);
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        int insertUser(IOT.ETL.Model.sys_user a);
+        /// <summary>
+        /// 修改状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        int Uptstate(string id);
     }
 }
