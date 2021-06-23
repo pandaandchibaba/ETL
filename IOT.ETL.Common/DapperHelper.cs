@@ -5,6 +5,7 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using Dapper;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace IOT.ETL.Common
 {
@@ -96,13 +97,13 @@ namespace IOT.ETL.Common
         /// <param name="sql">SQL语句</param>
         /// <param name="dbName">数据库名</param>
         /// <returns></returns>
-        public static string GetMySqlDate(string sql,string dbName)
+        public static async Task<string> GetMySqlDate(string sql,string dbName)
         {
             try
             {
                 using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnMySql+dbName))
                 {
-                    var reader = db.Query(sql);
+                    var reader = await db.QueryAsync(sql);
                     return JsonConvert.SerializeObject(reader);
                 }
             }
