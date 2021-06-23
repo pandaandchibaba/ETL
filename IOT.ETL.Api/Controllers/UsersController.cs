@@ -103,5 +103,54 @@ namespace IOT.ETL.Api.Controllers
             var i = _usersIRepository.UptPwd(email, password);
             return i;
         }
+
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        [Route("/api/AddUseras")]
+        [HttpPost]
+        public int AddUseras(Model.sys_user a)
+        {
+            int ls = _usersIRepository.insertUser(a);
+            return ls;
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Route("/api/DelUseress")]
+        [HttpPost]
+        public int DelUseress(string id)
+        {
+            int ls = _usersIRepository.DelUsers(id);
+            return ls;
+        }
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        [Route("/api/UptUseras")]
+        [HttpPost]
+        public int UptUseras([FromForm]Model.sys_user a)
+        {
+            int ls = _usersIRepository.Uptuser(a);
+            return ls;
+        }
+        /// <summary>
+        /// 修改状态
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        [Route("/api/Uptstatae")]
+        [HttpGet]
+        public int Uptstatae(string id)
+        {
+            int ls = _usersIRepository.Uptstate(id);
+            return ls;
+        }
     }
 }

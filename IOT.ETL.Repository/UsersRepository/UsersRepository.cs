@@ -94,9 +94,17 @@ namespace IOT.ETL.Repository.UsersRepository
         public int DelUsers(string id)
         {
             string sql = $"delete from sys_user where id='{id}'";
-            return DapperHelper.Execute(sql);
-        }
+            int i= DapperHelper.Execute(sql);
+            if (i > 0)
+            {
+                Model.sys_user sys_User = list.FirstOrDefault(x => x.id.ToString() == id);
+                list.Remove(sys_User);
+                //从新存入
+                rh.SetList(list, UsersKey);
 
+            }
+            return i;
+        }
         //添加用户
         public int InsertUsers(Model.sys_user a)
         {
@@ -114,6 +122,58 @@ namespace IOT.ETL.Repository.UsersRepository
             {
                 return 0;
             }
+        }
+        //修改
+        public int Uptuser(Model.sys_user a)
+        {
+            string sql = $"Update sys_user set name='{a.name}',email='{a.email}',phone='{a.phone}',img_url='{a.img_url}',username='{a.username}',password='{a.password}',is_admin='{a.is_admin}',status='{a.status}',revision='{a.revision}',create_by='{a.create_by}',create_time='{a.create_time}',update_by='{a.update_by}',UPDATED_TIME='{a.UPDATED_TIME}'where  id='{a.id}'";
+            int i= DapperHelper.Execute(sql);
+            if (i > 0)
+            {
+                list[list.IndexOf(list.Find(x => x.id == a.id))] = a;
+                rh.SetList(list, UsersKey);
+               
+            }
+            return i;
+        }
+        //添加
+        public int insertUser(Model.sys_user a)
+        {
+            a.id = Guid.NewGuid().ToString();
+            string sql = $"insert into sys_user values('{a.id}','{a.name}','{a.email}','{a.phone}','{a.img_url}','{a.username}','{a.password}','{a.is_admin}','{a.status}','{a.revision}','{a.create_by}','{a.create_time}','{a.update_by}','{a.UPDATED_TIME}')";
+            int i = DapperHelper.Execute(sql);
+            if (i > 0)
+            {
+                //a = DapperHelper.GetList<Model.sys_user>("select * from sys_user order by id desc LIMIT 1").FirstOrDefault();
+                //存入
+                list.Add(a);
+                rh.SetList(list, UsersKey);
+            }
+            return i;
+        }
+        //修改状态
+        public int Uptstate(string id)
+        {
+            IOT.ETL.Model.sys_user ls = list.First(x => x.id == id);
+            if (ls.status == 0)
+            {
+                ls.status = 1;
+            }
+            else
+            {
+                ls.status = 0;
+            }
+            string sql = $"Update sys_user set status='{ls.status}' where id='{ls.id}'";
+            int i= DapperHelper.Execute(sql);
+            if (i > 0)
+            {
+                rh.SetList(list,UsersKey);
+               
+            }
+            return i;
+
+
+
         }
     }
 }
