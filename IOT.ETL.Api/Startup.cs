@@ -29,6 +29,9 @@ using IOT.ETL.IRepository.IDataAnalysisRepository;
 using IOT.ETL.IRepository.sys_role_engine;
 using IOT.ETL.Repository.sys_role_engine;
 
+using IOT.ETL.IRepository.Ietl_task_join_info;
+using IOT.ETL.Repository.etl_task_join_info;
+
 namespace IOT.ETL.Api
 {
     public class Startup
@@ -58,6 +61,8 @@ namespace IOT.ETL.Api
             services.AddSingleton<IsysroleRespoditory, sysroleRespoditory>();
             services.AddSingleton<IsysmodulesRepository, sysmodulesRepository>();
             services.AddSingleton<Ietl_task_infoRepository, etl_task_infoRepository>();
+            services.AddSingleton<Ietl_task_join_infoRepository, etl_task_join_infoRepository>();
+            
             services.AddSingleton<IsysroleengineRepository, sysroleengineRepository>();
             #endregion
 
