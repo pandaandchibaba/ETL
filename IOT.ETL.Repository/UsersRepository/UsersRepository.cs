@@ -41,7 +41,7 @@ namespace IOT.ETL.Repository.UsersRepository
         //登录
         public int LoginUsers(string username, string password)
         {
-            string sql = $"select count(*) from sys_user where username='{username}' and password='{DESEncrypt.GetMd5Str(password)}'";
+            string sql = $"select count(*) from sys_user where username='{username}' and password='{password}'";
             var b = DapperHelper.Exescalar(sql);
             int i = Convert.ToInt32(b);
             //将登录信息放入缓存
