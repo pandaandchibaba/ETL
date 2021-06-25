@@ -64,7 +64,7 @@ namespace IOT.ETL.Api.Controllers
         /// <returns></returns>
         [Route("/api/UptRoles")]
         [HttpPost]
-        public int UptRoles(Model.sys_role a)
+        public int UptRoles([FromForm]Model.sys_role a)
         {
             int ls =_sysroleRespoditory.UpdateRoles(a);
             return ls;

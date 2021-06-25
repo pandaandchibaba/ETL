@@ -13,33 +13,36 @@ namespace IOT.ETL.Repository.ILOGRepository
     {
         //定义全部缓存关键字
         string redisKey;
-        //定义视图缓存关键字
-        string redisKey2;
-        //定义登录的关键字
-        string loginKey;
-
         //获取规则引擎的全部数据
         List<IOT.ETL.Model.etl_data_engine> list = new List<etl_data_engine>();
-        //获取规则引擎视图的全部数据
-        List<IOT.ETL.Model.V_IOLG> list2 = new List<V_IOLG>();
-        //获取登录的数据
-        List<Model.sys_user> users = new List<Model.sys_user>();
-
         //实例化规则引擎的redis
         RedisHelper<Model.etl_data_engine> rh = new RedisHelper<etl_data_engine>();
-        //实例化登录的redis
-        RedisHelper<Model.sys_user> loginh = new RedisHelper<Model.sys_user>();
+
+        //定义视图缓存关键字
+        string redisKey2;
+        //获取规则引擎视图的全部数据
+        List<IOT.ETL.Model.V_IOLG> list2 = new List<V_IOLG>();
         //实例化规则引擎视图的redis
         RedisHelper<Model.V_IOLG> rh2 = new RedisHelper<V_IOLG>();
 
+        //定义登录的关键字
+        string loginKey;
+        //获取登录的数据
+        List<Model.sys_user> users = new List<Model.sys_user>();
+        //实例化登录的redis
+        RedisHelper<Model.sys_user> loginh = new RedisHelper<Model.sys_user>();
+
+       
         public ILOGRepository()
         {
             redisKey = "ILOG_list";
-            redisKey2 = "ILOG_list2";
-            loginKey = "users_list";
-            users = loginh.GetList(loginKey);
             list = rh.GetList(redisKey);
+
+            redisKey2 = "ILOG_list2";
             list2 = rh2.GetList(redisKey2);
+
+            loginKey = "Login_list";
+            users = loginh.GetList(loginKey);
         }
 
         //添加
@@ -54,10 +57,14 @@ namespace IOT.ETL.Repository.ILOGRepository
                 int i = DapperHelper.Execute(sql);
                 if (i > 0)
                 {
-                    a = DapperHelper.GetList<Model.etl_data_engine>("select * from etl_data_engine order by id desc LIMIT 1").FirstOrDefault();
+                    a = DapperHelper.GetList<Model.etl_data_engine>("select * from etl_data_engine order by create_time desc LIMIT 1").FirstOrDefault();
                     //存入
                     list.Add(a);
                     rh.SetList(list, redisKey);
+                    //不存在
+                    list2 = DapperHelper.GetList<IOT.ETL.Model.V_IOLG>("select * from V_IOLG");
+                    //存入
+                    rh2.SetList(list2, redisKey2);
                     return 1;
                 }
                 else
@@ -78,7 +85,7 @@ namespace IOT.ETL.Repository.ILOGRepository
         {
             try
             {
-                string sql = $"delete from etl_data_engine where id='{id}'";
+                string sql = $"delete from etl_data_engine where id in ('{id}')";
                 int i = DapperHelper.Execute(sql);
                 if (i > 0)
                 {
@@ -90,12 +97,15 @@ namespace IOT.ETL.Repository.ILOGRepository
                     }
                     //重新存入
                     rh.SetList(list, redisKey);
+                    //不存在
+                    list2 = DapperHelper.GetList<IOT.ETL.Model.V_IOLG>("select * from V_IOLG");
+                    //存入
+                    rh2.SetList(list2, redisKey2);
                 }
                 return i;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -113,6 +123,14 @@ namespace IOT.ETL.Repository.ILOGRepository
                     //存入
                     rh2.SetList(list2, redisKey2);
                 }
+                //判断缓存是否存在
+                if (list == null || list.Count == 0)
+                {
+                    //不存在
+                    list = DapperHelper.GetList<IOT.ETL.Model.etl_data_engine>("select * from etl_data_engine");
+                    //存入
+                    rh.SetList(list, redisKey);
+                }
                 return list2;
             }
             catch (Exception)
@@ -121,6 +139,7 @@ namespace IOT.ETL.Repository.ILOGRepository
                 throw;
             }
         }
+
 
         //修改
         public int UptILOG(etl_data_engine a)
@@ -133,10 +152,13 @@ namespace IOT.ETL.Repository.ILOGRepository
                 int i = DapperHelper.Execute(sql);
                 if (i > 0)
                 {
-                    Model.etl_data_engine me = list.FirstOrDefault(x => x.id.Equals(a.id));
-                    list[list.IndexOf(me)] = a;
+                    list[list.IndexOf(list.First(x=>x.id==a.id))] = a;
                     //重新存入
                     rh.SetList(list, redisKey);
+                    //不存在
+                    list2 = DapperHelper.GetList<IOT.ETL.Model.V_IOLG>("select * from V_IOLG");
+                    //存入
+                    rh2.SetList(list2, redisKey2);
                 }
                 return i;
             }

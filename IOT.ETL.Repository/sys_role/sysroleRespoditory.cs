@@ -27,6 +27,7 @@ namespace IOT.ETL.Repository.sys_role
         /// <returns></returns>
         public int insertRoles(Model.sys_role a)
         {
+            a.id = Guid.NewGuid().ToString();
             string sql = $"insert into sys_role VALUES('{a.id}','{a.role_name}','{a.role_status}','{a.revision}','{a.create_by}','{a.create_time}','{a.update_by}','{a.update_time}')";
             return DapperHelper.Execute(sql);
         }

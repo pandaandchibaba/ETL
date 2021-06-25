@@ -17,7 +17,7 @@ namespace IOT.ETL.IRepository.IDataAnalysisRepository
         /// <param name="sql"></param>
         /// <param name="dbName"></param>
         /// <returns></returns>
-        public string GetDateTable(string sql, string dbName, string code);
+        public Task<string> GetDateTable(string sql, string dbName, string code);
         #endregion
 
         #region 绑定树
