@@ -21,9 +21,7 @@ namespace IOT.ETL.Api.Controllers
         //实例化日志
         Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        /// <summary>
-        /// 注入
-        /// </summary>
+        // 注入
         private readonly ISys_paramIRepository _sys_ParamIRepository;
         public ISys_paramIController(ISys_paramIRepository sys_ParamIRepository)
         {
@@ -31,31 +29,24 @@ namespace IOT.ETL.Api.Controllers
             LoginKey = "Login_list";
             lstl = rl.GetList(LoginKey);
         }
-        /// <summary>
-        /// 绑定下拉
-        /// </summary>
-        /// <returns></returns>
+
+        // 绑定下拉
         [HttpGet]
         [Route("/api/Binds")]
-        public IActionResult Binds()
+        public async Task<IActionResult> Binds()
         {
-            return Ok(_sys_ParamIRepository.BindParent());
+            return Ok( await _sys_ParamIRepository.BindParent());
         }
-        /// <summary>
-        /// 显示参数字典
-        /// </summary>
-        /// <param name="nm1"></param>
-        /// <param name="nm2"></param>
-        /// <param name="nm3"></param>
-        /// <returns></returns>
+
+        // 显示参数字典
         [Route("/api/ShowSys_param")]
         [HttpGet]
-        public IActionResult ShowSys_param(string pid=null)
+        public async Task<IActionResult> ShowSys_param(string pid=null)
         {
             try
             {
                 //获取全部数据
-                List<IOT.ETL.Model.sys_param> sys_Params = _sys_ParamIRepository.ShowSys_param(pid);
+                List<IOT.ETL.Model.sys_param> sys_Params = await _sys_ParamIRepository.ShowSys_param(pid);
                 return Ok(new
                 {
                     msg = "",
@@ -70,16 +61,12 @@ namespace IOT.ETL.Api.Controllers
             }
         }
 
-        /// <summary>
-        /// 添加
-        /// </summary>
-        /// <param name="sys_Param"></param>
-        /// <returns></returns>
+        // 添加
         [Route("/api/AddSys_param")]
         [HttpPost]
-        public int AddSys_param([FromForm]IOT.ETL.Model.sys_param sys_Param)
+        public async Task<int> AddSys_param([FromForm]IOT.ETL.Model.sys_param sys_Param)
         {
-            int i = _sys_ParamIRepository.AddSys_param(sys_Param);
+            int i = await _sys_ParamIRepository.AddSys_param(sys_Param);
             //判断是否添加成功  添加成功写入日志
             if (i>0)
             {
@@ -90,17 +77,13 @@ namespace IOT.ETL.Api.Controllers
             }
             return i;
         }
-        
-        /// <summary>
-        /// 删除
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
+
+        // 删除
         [Route("/api/DelSys_param")]
         [HttpDelete]
-        public int DelSys_param(string ids)
+        public async Task<int> DelSys_param(string ids)
         {
-            int i = _sys_ParamIRepository.DelSys_param(ids);
+            int i = await _sys_ParamIRepository.DelSys_param(ids);
             //判断是否添加成功  添加成功写入日志
             if (i > 0)
             {
@@ -112,16 +95,12 @@ namespace IOT.ETL.Api.Controllers
             return i;
         }
 
-        /// <summary>
-        /// 修改
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
+        // 修改
         [Route("/api/UptSys_param")]
         [HttpPut]
-        public int UptSys_param(IOT.ETL.Model.sys_param sys_Param)
+        public async Task<int> UptSys_param(IOT.ETL.Model.sys_param sys_Param)
         {
-            int i = _sys_ParamIRepository.UptSys_param(sys_Param);
+            int i = await _sys_ParamIRepository.UptSys_param(sys_Param);
             //判断是否添加成功  添加成功写入日志
             if (i > 0)
             {

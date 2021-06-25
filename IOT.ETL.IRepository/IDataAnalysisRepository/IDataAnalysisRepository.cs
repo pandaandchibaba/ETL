@@ -25,7 +25,7 @@ namespace IOT.ETL.IRepository.IDataAnalysisRepository
         /// 绑定树
         /// </summary>
         /// <returns></returns>
-        public List<Dictionary<string, object>> BindTree();
+        public Task<List<Dictionary<string, object>>>  BindTree();
         #endregion
     }
 }

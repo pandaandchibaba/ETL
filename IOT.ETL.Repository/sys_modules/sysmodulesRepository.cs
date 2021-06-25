@@ -10,10 +10,10 @@ namespace IOT.ETL.Repository.sys_modules
 {
     public class sysmodulesRepository : IsysmodulesRepository
     {
-        public List<Model.sys_modules> GetSys_Modules()
+        public async Task<List<Model.sys_modules>> GetSys_Modules()
         {
             string sql = "select * from  sys_modules";
-            return DapperHelper.GetList<Model.sys_modules>(sql);
+            return await DapperHelper.GetList<Model.sys_modules>(sql);
         }
     }
 }

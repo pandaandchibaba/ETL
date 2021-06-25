@@ -19,18 +19,18 @@ namespace IOT.ETL.Api.Controllers
         }
         [HttpGet]
         [Route("/api/AutUpt")]
-        public int AutUpt(string rid, string modulesid)
+        public async Task<int> AutUpt(string rid, string modulesid)
         {
             int i = 0;
-            i += _sysroleengineRepository.UptApp(rid, modulesid);
+            i += await _sysroleengineRepository.UptApp(rid, modulesid);
             return i;
         }
 
         [HttpGet]
         [Route("/api/GetAut")]
-        public IActionResult GetAut(string rid)
+        public async Task<IActionResult> GetAut(string rid)
         {
-            var result = _sysroleengineRepository.fromMane(rid);
+            var result = await _sysroleengineRepository.fromMane(rid);
 
             return Ok(result);
         }

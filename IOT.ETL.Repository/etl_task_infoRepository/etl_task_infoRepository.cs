@@ -21,22 +21,18 @@ namespace IOT.ETL.Repository.etl_task_info
             lt = rd.GetList(redisKey);//存放
         }
 
-        public List<T> dbtable<T>()
+        public async Task<List<T>> dbtable<T>()
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
         /// 删除
-        /// </summary>
-        /// <param name="ids">id</param>
-        /// <returns></returns>
-        public  int Deletl_Task_Infos(string ids)
+        public async Task<int> Deletl_Task_Infos(string ids)
         {
             try
             {
                 string sql = $"DELETE FROM etl_task_info WHERE id in ('{ids}') ";
-                int i = DapperHelper.Execute(sql);
+                int i = await DapperHelper.Execute(sql);
                 if (i > 0)
                 {
                     string[] arr = ids.Split(',');
@@ -63,7 +59,7 @@ namespace IOT.ETL.Repository.etl_task_info
         /// <param name="weight">任务权重级别</param>
         /// <param name="process_status">任务执行状态</param>
         /// <returns></returns>
-        public List<Model.etl_task_info> Getetl_Task_Infos(string name, int weight, int process_status)
+        public async Task<List<Model.etl_task_info>> Getetl_Task_Infos(string name, int weight, int process_status)
         {
             lt = null;
             try
@@ -73,7 +69,7 @@ namespace IOT.ETL.Repository.etl_task_info
                 {
                     string sql = $"select * from etl_task_info";
 
-                    lt = DapperHelper.GetList<Model.etl_task_info>(sql);
+                    lt = await DapperHelper.GetList<Model.etl_task_info>(sql);
                     rd.SetList(lt, redisKey);
                 }
                 return lt;
@@ -84,12 +80,9 @@ namespace IOT.ETL.Repository.etl_task_info
                 throw;
             }
         }
-            
-        /// <summary>
-        /// 简单显示
-        /// </summary>
-        /// <returns></returns>
-        public  List<Model.etl_task_info> Getetl_Task_Infoslist()
+
+        // 简单显示
+        public async Task<List<Model.etl_task_info>> Getetl_Task_Infoslist()
         {
             lt = null;
             try
@@ -97,7 +90,7 @@ namespace IOT.ETL.Repository.etl_task_info
                 if (lt == null || lt.Count == 0)
                 {
                     string sql = "select * from etl_task_info ";
-                   lt= DapperHelper.GetList<Model.etl_task_info>(sql);
+                   lt= await DapperHelper.GetList<Model.etl_task_info>(sql);
                     rd.SetList(lt, redisKey);
                 }
                 return lt;
@@ -111,11 +104,11 @@ namespace IOT.ETL.Repository.etl_task_info
             
         }
 
-        public int insertetl_Task_Infos(Model.etl_task_info _etl_Task_Info)
+        public async Task<int> insertetl_Task_Infos(Model.etl_task_info _etl_Task_Info)
         {
 
             string sql = $"insert into etl_task_info values('UUID()','{_etl_Task_Info.Name}','{_etl_Task_Info.Weight}','1','0','0','0','0','0','0','0','0','0','0','0','0','10','10','0','1','user',NOW(),'user',NOW());";
-            int i= DapperHelper.Execute(sql);
+            int i= await DapperHelper.Execute(sql);
             if (i>0)
             {
                 lt.Add(_etl_Task_Info);
@@ -128,12 +121,12 @@ namespace IOT.ETL.Repository.etl_task_info
             }
         }
 
-        public int insertsql()
+        public async Task<int> insertsql()
         {
             throw new NotImplementedException();
         }
 
-        public List<myTable> myTables()
+        public async Task<List<myTable>> myTables()
         {
             throw new NotImplementedException();
         }

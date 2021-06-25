@@ -23,9 +23,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
         //登录集合
         List<Model.sys_user> lstl = new List<Model.sys_user>();
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
+        // 构造函数
         public ISys_paramRepository()
         {
             redisKey = "sys_param_list";
@@ -34,22 +32,19 @@ namespace IOT.ETL.Repository.ISys_paramRepository
             lstl = rl.GetList(LoginKey);
         }
 
-        /// <summary>
-        /// 添加
-        /// </summary>
-        /// <param name="sys_Param"></param>
-        /// <returns></returns>
-        public int AddSys_param(sys_param sys_Param)
+        // 添加
+        public async Task<int> AddSys_param(sys_param sys_Param)
         {
             try
             {
                 //从缓存中取登录用户信息
                 Model.sys_user sys_User = lstl.FirstOrDefault();
                 string sql = $"INSERT INTO sys_param VALUES(UUID(),'{sys_Param.Code}','{sys_Param.Name}','{sys_Param.Pid}',{sys_Param.Default_status},{sys_Param.Is_system},{sys_Param.Is_del},{sys_Param.Order_by},'{sys_Param.Text}','{sys_User.name}',NOW(),'{sys_User.name}',NOW())";
-                int i = DapperHelper.Execute(sql);
+                int i = await DapperHelper.Execute(sql);
                 if (i > 0)
                 {
-                    sys_Param = DapperHelper.GetList<Model.sys_param>("SELECT *FROM sys_param ORDER BY create_time DESC LIMIT 1").FirstOrDefault();
+                    var aa =await DapperHelper.GetList<Model.sys_param>("SELECT *FROM sys_param ORDER BY create_time DESC LIMIT 1");
+                    sys_Param = aa.FirstOrDefault();
                     lst.Add(sys_Param);
                     rp.SetList(lst, redisKey);
                     return i;
@@ -67,20 +62,16 @@ namespace IOT.ETL.Repository.ISys_paramRepository
 
         }
 
-        public List<Dictionary<string, object>> BindParent()
+        public async Task<List<Dictionary<string, object>>>  BindParent()
         {
             string sql = "SELECT *FROM sys_param ORDER BY order_by;";
-            List<Model.sys_param> list = DapperHelper.GetList<Model.sys_param>(sql);
-            List<Dictionary<string, object>> Alltree = Recursion(list,"0");
+            List<Model.sys_param> list = await DapperHelper.GetList<Model.sys_param>(sql);
+            List<Dictionary<string, object>> Alltree = await Recursion(list,"0");
             return Alltree;
         }
-        /// <summary>
-        /// 递归方法
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="pid"></param>
-        /// <returns></returns>
-        public List<Dictionary<string, object>> Recursion(List<Model.sys_param> lst, string pid) 
+
+        // 递归方法
+        public async Task<List<Dictionary<string, object>>> Recursion(List<Model.sys_param> lst, string pid) 
         {
             //字典集合
             List<Dictionary<string, object>> json = new List<Dictionary<string, object>>();
@@ -101,15 +92,11 @@ namespace IOT.ETL.Repository.ISys_paramRepository
             return json;
         }
 
-        /// <summary>
-        /// 删除
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
-        public int DelSys_param(string ids)
+        // 删除
+        public async Task<int> DelSys_param(string ids)
         {
             string sql = $"DELETE FROM sys_param WHERE id in('{ids}')";
-            int i = DapperHelper.Execute(sql);
+            int i = await DapperHelper.Execute(sql);
             if (i > 0)
             {
                 //截取
@@ -126,19 +113,15 @@ namespace IOT.ETL.Repository.ISys_paramRepository
             return i;
         }
 
-        /// <summary>
-        /// 修改
-        /// </summary>
-        /// <param name="sys_Param"></param>
-        /// <returns></returns>
-        public int UptSys_param(sys_param sys_Param)
+        // 修改
+        public async Task<int> UptSys_param(sys_param sys_Param)
         {
             try
             {
                 //从缓存中取登录用户信息
                 Model.sys_user sys_User = lstl.FirstOrDefault();
                 string sql = $"UPDATE sys_param SET code='{sys_Param.Code}',name='{sys_Param.Name}',is_system={sys_Param.Is_system},default_status={sys_Param.Default_status},order_by={sys_Param.Order_by},text='{sys_Param.Text}',update_by='{sys_User.name}',update_time=NOW()  WHERE id='{sys_Param.Id}'";
-                int i = DapperHelper.Execute(sql);
+                int i = await DapperHelper.Execute(sql);
                 if (i > 0)
                 {
                     lst[lst.IndexOf(lst.First(x => x.Id == sys_Param.Id))] = sys_Param;
@@ -159,11 +142,8 @@ namespace IOT.ETL.Repository.ISys_paramRepository
 
         }
 
-        /// <summary>
-        /// 显示
-        /// </summary>
-        /// <returns></returns>
-        List<sys_param> ISys_paramIRepository.ShowSys_param(string pid)
+        // 显示
+        async Task<List<sys_param>> ISys_paramIRepository.ShowSys_param(string pid)
         {
             lst = null;
             try
@@ -172,7 +152,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
                 //判断缓存是否存在
                 if (lst == null || lst.Count == 0)
                 {
-                    lst = DapperHelper.GetList<IOT.ETL.Model.sys_param>("SELECT a.*,b.name fname FROM sys_param a LEFT  JOIN sys_param b on a.pid=b.id ORDER BY a.order_by");
+                    lst = await DapperHelper.GetList<IOT.ETL.Model.sys_param>("SELECT a.*,b.name fname FROM sys_param a LEFT  JOIN sys_param b on a.pid=b.id ORDER BY a.order_by");
 
                     //lst.Where(m => m.Pid == m.Id).FirstOrDefault().HasChildren = true;
 

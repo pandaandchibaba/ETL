@@ -18,13 +18,13 @@ namespace IOT.ETL.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public static List<T> GetList<T>(string sql)
+        public static async Task<List<T>>  GetList<T>(string sql)
         {
             try
             {
                 using (IDbConnection db = new MySqlConnection(ConfigurationManager.Conn))
                 {
-                    return db.Query<T>(sql).ToList();
+                    return (List<T>)await db.QueryAsync<T>(sql);
                 }
             }
             catch (Exception)
@@ -38,13 +38,13 @@ namespace IOT.ETL.Common
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public static int Execute(string sql)
+        public static async Task<int>  Execute(string sql)
         {
             try
             {
                 using (IDbConnection db = new MySqlConnection(ConfigurationManager.Conn))
                 {
-                    return db.Execute(sql);
+                    return await db.ExecuteAsync(sql);
                 }
             }
             catch (Exception)
@@ -58,13 +58,13 @@ namespace IOT.ETL.Common
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public static object Exescalar(string sql)
+        public static async Task<object> Exescalar(string sql)
         {
             try
             {
                 using (IDbConnection db = new MySqlConnection(ConfigurationManager.Conn))
                 {
-                    return db.ExecuteScalar(sql);
+                    return await db.ExecuteScalarAsync(sql);
                 }
             }
             catch (Exception)

@@ -18,15 +18,12 @@ namespace IOT.ETL.Api.Controllers
             _serviceProvider = serviceProvider;
         }
 
-        /// <summary>
-        /// 显示
-        /// </summary>
-        /// <returns></returns>
+        // 显示
         [Route("/api/UserShow")]
         [HttpGet]
-        public IActionResult UserShow(string sname = "", string yhm = "", string phones = "")
+        public async Task<IActionResult> UserShow(string sname = "", string yhm = "", string phones = "")
         {
-            var ls = _serviceProvider.ShowUser();
+            var ls = await _serviceProvider.ShowUser();
             if (!string.IsNullOrEmpty(sname))
             {
                 ls = ls.Where(x => x.name.Contains(sname)).ToList();
@@ -41,52 +38,40 @@ namespace IOT.ETL.Api.Controllers
             }
             return Ok(new { data = ls });
         }
-        /// <summary>
-        /// 添加
-        /// </summary>
-        /// <param name="a"></param>
-        /// <returns></returns>
+       
+        // 添加
         [Route("/api/AddUser")]
         [HttpPost]
-        public int AddUser(Model.sys_user a)
+        public async Task<int> AddUser(Model.sys_user a)
         {
-            int ls = _serviceProvider.insertUser(a);
+            int ls = await _serviceProvider.insertUser(a);
             return ls;
         }
-        /// <summary>
-        /// 删除
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+      
+        // 删除
         [Route("/api/DelUsers")]
         [HttpPost]
-        public int DelUsers(string id)
+        public async Task<int> DelUsers(string id)
         {
-            int ls = _serviceProvider.DelUser(id);
+            int ls = await _serviceProvider.DelUser(id);
             return ls;
         }
-        /// <summary>
-        /// 修改
-        /// </summary>
-        /// <param name="a"></param>
-        /// <returns></returns>
+     
+        // 修改
         [Route("/api/UptUsers")]
         [HttpPost]
-        public int UptUsers(Model.sys_user a)
+        public async Task<int> UptUsers(Model.sys_user a)
         {
-            int ls = _serviceProvider.Uptuser(a);
+            int ls = await _serviceProvider.Uptuser(a);
             return ls;
         }
-        /// <summary>
-        /// 修改状态
-        /// </summary>
-        /// <param name="a"></param>
-        /// <returns></returns>
+     
+        // 修改状态
         [Route("/api/Uptstate")]
         [HttpPost]
-        public int Uptstate(string id)
+        public async Task<int> Uptstate(string id)
         {
-            int ls = _serviceProvider.Uptstate(id);
+            int ls = await  _serviceProvider.Uptstate(id);
             return ls;
         }
 

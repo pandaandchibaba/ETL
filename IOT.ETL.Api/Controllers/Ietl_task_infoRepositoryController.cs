@@ -25,24 +25,23 @@ namespace IOT.ETL.Api.Controllers
         List<Model.sys_user> lstl = new List<Model.sys_user>();
         //实例化日志
         Logger logger = NLog.LogManager.GetCurrentClassLogger();
-        
-
-
 
         //注入
         private readonly Ietl_task_infoRepository _Ietl_task_infoRepository;
+
         public Ietl_task_infoRepositoryController(Ietl_task_infoRepository   etl_Task_InfoRepository)
         {
             _Ietl_task_infoRepository = etl_Task_InfoRepository;
             LoginKey = "Login_list";
             lstl = rl.GetList(LoginKey);
         }
+
         //显示
         [Route("/api/getetl_task_infolist")]
         [HttpGet]
-        public  IActionResult  getetl_task_infolist()
+        public async Task<IActionResult>  getetl_task_infolist()
         {
-            var ls = _Ietl_task_infoRepository.Getetl_Task_Infoslist();
+            var ls = await _Ietl_task_infoRepository.Getetl_Task_Infoslist();
 
             return Ok(new
             {
@@ -51,12 +50,13 @@ namespace IOT.ETL.Api.Controllers
                 data = ls
             });
         }
+
         //显示
         [Route("/api/Getetl_Task_Infos")]
         [HttpGet]
-        public  IActionResult Getetl_Task_Infos(string name="",int weight=10,int process_status=10)
+        public async Task<IActionResult> Getetl_Task_Infos(string name="",int weight=10,int process_status=10)
         {
-            var ls = _Ietl_task_infoRepository.Getetl_Task_Infos(name, weight, process_status);
+            var ls = await  _Ietl_task_infoRepository.Getetl_Task_Infos(name, weight, process_status);
             if (name == "" && weight ==10  && process_status == 10)
             {
                 return Ok(new
@@ -86,14 +86,15 @@ namespace IOT.ETL.Api.Controllers
             });
 
         }
+
         //删除
         [Route("/api/Deletl_Task_Infos")]
         [HttpDelete]
-        public int Deletl_Task_Infos(string ids)
+        public async Task<int> Deletl_Task_Infos(string ids)
         {
             try
             {
-                int i = _Ietl_task_infoRepository.Deletl_Task_Infos(ids);
+                int i = await _Ietl_task_infoRepository.Deletl_Task_Infos(ids);
                 if (i > 0)
                 {
                     Model.sys_user sys_User = lstl.FirstOrDefault();
@@ -107,14 +108,15 @@ namespace IOT.ETL.Api.Controllers
                 throw;
             }
         }
+
         //添加
         [Route("/api/insertetl_Task_Infos")]
         [HttpPost]
-        public int insertetl_Task_Infos(Model.etl_task_info _etl_Task_Info)
+        public async Task<int> insertetl_Task_Infos(Model.etl_task_info _etl_Task_Info)
         {
             try
             {
-                int i = _Ietl_task_infoRepository.insertetl_Task_Infos(_etl_Task_Info);
+                int i = await _Ietl_task_infoRepository.insertetl_Task_Infos(_etl_Task_Info);
                 if (i>0)
                 {
                     Model.sys_user sys_User = lstl.FirstOrDefault();
