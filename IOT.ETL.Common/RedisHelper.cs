@@ -24,7 +24,21 @@ namespace IOT.ETL.Common
             }
         }
         #endregion
-
+        /// <summary>
+        /// 存入sql缓存
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="key"></param>
+        #region 放入sql缓存
+        public void SetString(string list, string key)
+        {
+            using (IRedisClient client = new RedisClient("127.0.0.1", 6379))
+            {
+                //存入
+                client.Set<string>(key, list);
+            }
+        }
+        #endregion
         /// <summary>
         /// 删除key
         /// </summary>
@@ -69,7 +83,23 @@ namespace IOT.ETL.Common
                 //取出
                 return client.Get<List<T>>(key);
             }
-        } 
+        }
         #endregion
+        /// <summary>
+        /// 取出sql缓存
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        #region 取出sql缓存
+        public string GetString(string key)
+        {
+            using (IRedisClient client = new RedisClient("127.0.0.1", 6379))
+            {
+                //取出
+                return client.Get<string>(key);
+            }
+        }
+        #endregion
+
     }
 }

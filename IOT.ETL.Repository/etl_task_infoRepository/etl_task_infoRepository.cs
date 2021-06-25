@@ -113,8 +113,8 @@ namespace IOT.ETL.Repository.etl_task_info
 
         public int insertetl_Task_Infos(Model.etl_task_info _etl_Task_Info)
         {
-            string guid= Guid.NewGuid().ToString();
-            string sql = $"insert into etl_task_info values('{guid}','{_etl_Task_Info.Name}','{_etl_Task_Info.Weight}','1','0','0','0','0','0','0','0','0','0','0','0','0','10','10','0','1','user',NOW(),'user',NOW());";
+
+            string sql = $"insert into etl_task_info values('UUID()','{_etl_Task_Info.Name}','{_etl_Task_Info.Weight}','1','0','0','0','0','0','0','0','0','0','0','0','0','10','10','0','1','user',NOW(),'user',NOW());";
             int i= DapperHelper.Execute(sql);
             if (i>0)
             {
