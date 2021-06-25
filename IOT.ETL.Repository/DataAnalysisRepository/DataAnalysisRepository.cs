@@ -153,25 +153,25 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
             #endregion
 
             return tree;
-        } 
+        }
         #endregion
 
-        #region 显示查询
+        #region 根据不同的数据库显示不同的表数据
         /// <summary>
-        /// 显示查询
+        /// 根据不同的数据库显示不同的表数据
         /// </summary>
         /// <param name="sql"></param>
         /// <param name="dbName"></param>
         /// <returns></returns>
-        public string GetDateTable(string sql, string dbName,string code)
+        public async Task<string> GetDateTable(string sql, string dbName,string code)
         {
             if (code=="MySql")  //mysql
             {
-                return DapperHelper.GetMySqlDate(sql, dbName);
+                return await DapperHelper.GetMySqlDate(sql, dbName);
             }
             else  //sql
             {
-                return SqlHelper.GetSqlDate(sql, dbName);
+                return await SqlHelper.GetSqlDate(sql, dbName);
             }
         }
         #endregion

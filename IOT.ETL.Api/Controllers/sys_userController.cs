@@ -24,14 +24,14 @@ namespace IOT.ETL.Api.Controllers
         /// <returns></returns>
         [Route("/api/UserShow")]
         [HttpGet]
-        public IActionResult UserShow(string sname="",string yhm="",string phones="")
+        public IActionResult UserShow(string sname = "", string yhm = "", string phones = "")
         {
             var ls = _serviceProvider.ShowUser();
             if (!string.IsNullOrEmpty(sname))
             {
                 ls = ls.Where(x => x.name.Contains(sname)).ToList();
             }
-            if(!string.IsNullOrEmpty(yhm))
+            if (!string.IsNullOrEmpty(yhm))
             {
                 ls = ls.Where(x => x.username.Contains(yhm)).ToList();
             }

@@ -54,6 +54,8 @@ namespace IOT.ETL.Api.Controllers
             });
         }
 
+       
+
         //删除
         [Route("/api/DelILOG")]
         [HttpGet]

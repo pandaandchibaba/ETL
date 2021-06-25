@@ -36,5 +36,7 @@ namespace IOT.ETL.Common
         {
             get { return Configuration.GetConnectionString("connamesql"); }
         }
+
+        public static object AppSettings { get; internal set; }
     }
 }
