@@ -31,7 +31,16 @@ namespace IOT.ETL.Api.Controllers
             LoginKey = "Login_list";
             lstl = rl.GetList(LoginKey);
         }
-
+        /// <summary>
+        /// 绑定下拉
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("/api/Binds")]
+        public IActionResult Binds()
+        {
+            return Ok(_sys_ParamIRepository.BindParent());
+        }
         /// <summary>
         /// 显示参数字典
         /// </summary>
@@ -68,7 +77,7 @@ namespace IOT.ETL.Api.Controllers
         /// <returns></returns>
         [Route("/api/AddSys_param")]
         [HttpPost]
-        public int AddSys_param(IOT.ETL.Model.sys_param sys_Param)
+        public int AddSys_param([FromForm]IOT.ETL.Model.sys_param sys_Param)
         {
             int i = _sys_ParamIRepository.AddSys_param(sys_Param);
             //判断是否添加成功  添加成功写入日志

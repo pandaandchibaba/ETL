@@ -19,5 +19,7 @@ namespace IOT.ETL.IRepository.ISys_paramIRepository
 
         //修改
         int UptSys_param(IOT.ETL.Model.sys_param sys_Param);
+        //绑定类别
+        List<Dictionary<string, object>> BindParent();
     }
 }

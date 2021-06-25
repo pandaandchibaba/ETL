@@ -67,6 +67,40 @@ namespace IOT.ETL.Repository.ISys_paramRepository
 
         }
 
+        public List<Dictionary<string, object>> BindParent()
+        {
+            string sql = "SELECT *FROM sys_param ORDER BY order_by;";
+            List<Model.sys_param> list = DapperHelper.GetList<Model.sys_param>(sql);
+            List<Dictionary<string, object>> Alltree = Recursion(list,"0");
+            return Alltree;
+        }
+        /// <summary>
+        /// 递归方法
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public List<Dictionary<string, object>> Recursion(List<Model.sys_param> lst, string pid) 
+        {
+            //字典集合
+            List<Dictionary<string, object>> json = new List<Dictionary<string, object>>();
+            //获取所有的子节点集合
+            List<Model.sys_param> lstson = lst.Where(x => x.Pid.Equals(pid)).ToList();
+            //循环所有的子节点
+            foreach (var item in lstson)
+            {
+                Dictionary<string, object> jsonsub = new Dictionary<string, object>();
+                jsonsub.Add("value", item.Id);
+                jsonsub.Add("label", item.Name);
+                if (lst.Count(x=>x.Pid==item.Id)>0)
+                {
+                    jsonsub.Add("children", Recursion(lst, item.Id));
+                }
+                json.Add(jsonsub);
+            }
+            return json;
+        }
+
         /// <summary>
         /// 删除
         /// </summary>
@@ -134,22 +168,41 @@ namespace IOT.ETL.Repository.ISys_paramRepository
             lst = null;
             try
             {
+                List<Model.sys_param> ls = new List<Model.sys_param>();
                 //判断缓存是否存在
                 if (lst == null || lst.Count == 0)
                 {
-                    lst = DapperHelper.GetList<IOT.ETL.Model.sys_param>("SELECT *FROM sys_param WHERE pid='0' ORDER BY order_by");
-                    //不存在
-                    //按order_by排序  左连接 子节点在前 父节点在后
-                    if (pid != "0" || pid != null||!string.IsNullOrEmpty(pid))
+                    lst = DapperHelper.GetList<IOT.ETL.Model.sys_param>("SELECT a.*,b.name fname FROM sys_param a LEFT  JOIN sys_param b on a.pid=b.id ORDER BY a.order_by");
+
+                    //lst.Where(m => m.Pid == m.Id).FirstOrDefault().HasChildren = true;
+
+                    //from s in lst join 
+
+                    foreach (var s in lst)
                     {
-                        List<Model.sys_param> ls = DapperHelper.GetList<IOT.ETL.Model.sys_param>($"SELECT *FROM sys_param WHERE pid='{pid}' ORDER BY order_by");
-                        //循环将查询到的子节点放入到缓存的集合里面
-                        foreach (var item in ls)
+                        foreach (var ss in lst)
                         {
-                            lst.Add(item);
+                            if (s.Id == ss.Pid)
+                            {
+                                s.HasChildren = true;
+                            }
                         }
                     }
-                    rp.SetList(lst, redisKey);
+
+                    //不存在
+                    //按order_by排序  左连接 子节点在前 父节点在后
+                    if (pid != "0" || pid != null || !string.IsNullOrEmpty(pid))
+                    {
+                        ls = lst.Where(x => x.Pid == pid).ToList();
+                    }
+                }
+                if (ls.Count != 0)
+                {
+                    return ls;
+                }
+                if (pid == "0" || pid == null)
+                {
+                    return lst.Where(m => m.Pid == "0").ToList();
                 }
                 return lst;
             }
