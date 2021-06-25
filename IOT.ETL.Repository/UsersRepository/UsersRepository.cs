@@ -47,7 +47,7 @@ namespace IOT.ETL.Repository.UsersRepository
             //将登录信息放入缓存
             if (i > 0)
             {
-                string sqll = $"select *from sys_user where username='{username}' and password='{password}'";
+                string sqll = $"select *from sys_user where username='{username}' and password='{DESEncrypt.GetMd5Str(password)}'";
                 list = DapperHelper.GetList<Model.sys_user>(sqll);
                 rh.SetList(list, LoginKey);
             }
@@ -126,6 +126,7 @@ namespace IOT.ETL.Repository.UsersRepository
             }
             return i;
         }
+
         //添加用户
         public int InsertUsers(Model.sys_user a)
         {
@@ -147,6 +148,7 @@ namespace IOT.ETL.Repository.UsersRepository
                 return 0;
             }
         }
+
         //修改
         public int Uptuser(Model.sys_user a)
         {
@@ -160,6 +162,7 @@ namespace IOT.ETL.Repository.UsersRepository
             }
             return i;
         }
+
         //添加
         public int insertUser(Model.sys_user a)
         {
@@ -175,6 +178,7 @@ namespace IOT.ETL.Repository.UsersRepository
             }
             return i;
         }
+        
         //修改状态
         public int Uptstate(string id)
         {
