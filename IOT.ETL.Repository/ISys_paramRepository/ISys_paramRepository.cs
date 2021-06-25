@@ -72,7 +72,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
             string sql = "SELECT *FROM sys_param ORDER BY order_by;";
             List<Model.sys_param> list = DapperHelper.GetList<Model.sys_param>(sql);
             List<Dictionary<string, object>> Alltree = Recursion(list,"0");
-            //return Alltree;
+            return Alltree;
         }
         /// <summary>
         /// 递归方法
