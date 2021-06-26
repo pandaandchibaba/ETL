@@ -48,7 +48,7 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
         /// 绑定左侧树
         /// </summary>
         /// <returns></returns>
-        public List<Dictionary<string, object>> BindTree()
+        public async Task<List<Dictionary<string, object>>> BindTree()
         {
             //实例化一个字段集合
             List<Dictionary<string, object>> tree = new List<Dictionary<string, object>>();
@@ -62,14 +62,14 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
             if (lstMydb == null || lstMydb.Count == 0)
             {
                 //存入缓存
-                lstMydb = DapperHelper.GetList<myDataBase>("SHOW DATABASES");
+                lstMydb = await DapperHelper.GetList<myDataBase>("SHOW DATABASES");
                 mdbH.SetList(lstMydb, myDBkey);
             }
             //mysql的数据表
             if (lstMyTb == null || lstMyTb.Count == 0)
             {
                 //存入缓存
-                lstMyTb = DapperHelper.GetList<myTable>("select Table_Name,Table_Schema from information_schema.tables where table_type='base table'");
+                lstMyTb = await DapperHelper.GetList<myTable>("select Table_Name,Table_Schema from information_schema.tables where table_type='base table'");
                 mtH.SetList(lstMyTb, myTablekey);
             }
             //存放mysql数据库节点

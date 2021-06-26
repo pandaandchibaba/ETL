@@ -22,13 +22,7 @@ namespace IOT.ETL.Api.Controllers
         }
 
         #region 根据不同的数据库显示不同的表数据
-        /// <summary>
-        /// 根据不同的数据库显示不同的表数据
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="dbName"></param>
-        /// <param name="code"></param>
-        /// <returns></returns>
+        // 根据不同的数据库显示不同的表数据
         [HttpGet("/api/GetTable")]
         public async Task<string> GetTable(string sql, string dbName, string code)
         {
@@ -51,9 +45,10 @@ namespace IOT.ETL.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("/api/BindLeftTree")]
-        public IActionResult BindLeftTree()
+        public async Task<IActionResult> BindLeftTree()
         {
-            return Ok(_dataAnalysis.BindTree());
+            var ss = await _dataAnalysis.BindTree();
+            return Ok(ss);
         }
         #endregion
     }

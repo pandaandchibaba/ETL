@@ -21,19 +21,19 @@ namespace IOT.ETL.Api.Controllers
         //添加
         [Route("/api/AddILOG")]
         [HttpPost]
-        public int AddILOG([FromForm]IOT.ETL.Model.etl_data_engine a)
+        public async Task<int> AddILOG([FromForm]IOT.ETL.Model.etl_data_engine a)
         {
-            int i = _iLOGIRepository.AddILOG(a);
+            int i = await _iLOGIRepository.AddILOG(a);
             return i;
         }
 
         //显示
         [Route("/api/ShowILOG")]
         [HttpGet]
-        public IActionResult ShowILOG(string nm1 = "", string nm2 = "", string nm3 = "")
+        public async Task<IActionResult> ShowILOG(string nm1 = "", string nm2 = "", string nm3 = "")
         {
             //获取全部数据
-            var ls = _iLOGIRepository.ShowILOG();
+            var ls = await _iLOGIRepository.ShowILOG();
             if (!string.IsNullOrEmpty(nm1))
             {
                 ls = ls.Where(x => x.engine_name.Contains(nm1)).ToList();
@@ -59,18 +59,18 @@ namespace IOT.ETL.Api.Controllers
         //删除
         [Route("/api/DelILOG")]
         [HttpGet]
-        public int DelILOG(string id)
+        public async Task<int> DelILOG(string id)
         {
-            int i = _iLOGIRepository.DelILOG(id);
+            int i = await _iLOGIRepository.DelILOG(id);
             return i;
         }
 
         //修改
         [Route("/api/UptILOG")]
         [HttpPost]
-        public int UptILOG([FromForm] IOT.ETL.Model.etl_data_engine a)
+        public async Task<int> UptILOG([FromForm] IOT.ETL.Model.etl_data_engine a)
         {
-            int i = _iLOGIRepository.UptILOG(a);
+            int i = await _iLOGIRepository.UptILOG(a);
             return i;
         }
     }

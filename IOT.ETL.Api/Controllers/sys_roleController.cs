@@ -18,55 +18,43 @@ namespace IOT.ETL.Api.Controllers
             _sysroleRespoditory = sysroleRespoditory;
         }
 
-        /// <summary>
-        /// 显示
-        /// </summary>
-        /// <returns></returns>
+        // 显示
         [Route("/api/RolesShow")]
         [HttpGet]
-        public IActionResult RolesShow(string sname="")
+        public async Task<IActionResult> RolesShow(string sname="")
         {
-            var ls =_sysroleRespoditory.ShowRoles();
+            var ls =await _sysroleRespoditory.ShowRoles();
             if (!string.IsNullOrEmpty(sname))
             {
                 ls = ls.Where(x => x.role_name.Contains(sname)).ToList();
             }
             return Ok(new { data = ls });
         }
-        /// <summary>
-        /// 添加
-        /// </summary>
-        /// <param name="a"></param>
-        /// <returns></returns>
+
+        // 添加
         [Route("/api/AddRoles")]
         [HttpPost]
-        public int AddRoles(Model.sys_role a)
+        public async Task<int> AddRoles(Model.sys_role a)
         {
-            int ls = _sysroleRespoditory.insertRoles(a);
+            int ls = await  _sysroleRespoditory.insertRoles(a);
             return ls;
         }
-        /// <summary>
-        /// 删除
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        
+        // 删除
         [Route("/api/DelRoles")]
         [HttpPost]
-        public int DelRoles(string id)
+        public async Task<int> DelRoles(string id)
         {
-            int ls = _sysroleRespoditory.delRoles(id);
+            int ls = await _sysroleRespoditory.delRoles(id);
             return ls;
         }
-        /// <summary>
-        /// 修改
-        /// </summary>
-        /// <param name="a"></param>
-        /// <returns></returns>
+        
+        // 修改
         [Route("/api/UptRoles")]
         [HttpPost]
-        public int UptRoles([FromForm]Model.sys_role a)
+        public async Task<int> UptRoles([FromForm]Model.sys_role a)
         {
-            int ls =_sysroleRespoditory.UpdateRoles(a);
+            int ls = await _sysroleRespoditory.UpdateRoles(a);
             return ls;
         }
     }

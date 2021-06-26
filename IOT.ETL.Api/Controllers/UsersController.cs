@@ -35,19 +35,19 @@ namespace IOT.ETL.Api.Controllers
         //注册
         [Route("/api/AddUsers")]
         [HttpPost]
-        public int AddUsers([FromForm] IOT.ETL.Model.sys_user a)
+        public async Task<int> AddUsers([FromForm] IOT.ETL.Model.sys_user a)
         {
             try
             {
                 //先获取所有用户的信息
-                var list = _usersIRepository.GetUsers();
+                var list = await _usersIRepository.GetUsers();
                 //查看用户是否注册过
                 var users = list.FirstOrDefault(x => x.username.Equals(a.username) || x.email.Equals(a.email));
                 if (users != null)
                 {
                     return -2;
                 }
-                var s = _usersIRepository.AddUsers(a);
+                var s = await _usersIRepository.AddUsers(a);
                 return s;
             }
             catch (Exception)
@@ -57,22 +57,14 @@ namespace IOT.ETL.Api.Controllers
             }
         }
 
-        //添加用户
-        [Route("/api/InsertUsers")]
-        [HttpPost]
-        public int InsertUsers([FromForm] IOT.ETL.Model.sys_user a)
-        {
-            int i = _usersIRepository.InsertUsers(a);
-            return i;
-        }
 
         //显示全部用户信息
         [Route("/api/GetUsers")]
         [HttpGet]
-        public IActionResult GetUsers(string nm = "", string ph="",string nm2="")
+        public async Task<IActionResult> GetUsers(string nm = "", string ph="",string nm2="")
         {
             //获取全部数据
-            var ls = _usersIRepository.GetUsers();
+            var ls = await _usersIRepository.GetUsers();
             if (!string.IsNullOrEmpty(nm))
             {
                 ls = ls.Where(x => x.name.Contains(nm)).ToList();
@@ -96,11 +88,11 @@ namespace IOT.ETL.Api.Controllers
         //登录
         [Route("/api/LoginUsers")]
         [HttpGet]
-        public IActionResult LoginUsers(string username, string password)
+        public async Task<IActionResult> LoginUsers(string username, string password)
         {
             try
             {
-                var s = _usersIRepository.LoginUsers(username, password);
+                var s = await _usersIRepository.LoginUsers(username, password);
                 if (s > 0)
                 {
                     logger.Debug($"用户：{username}，在" + DateTime.Now + "登录成功");
@@ -118,7 +110,7 @@ namespace IOT.ETL.Api.Controllers
         //邮箱修改密码
         [Route("/api/UptPwd")]
         [HttpPost]
-        public int UptPwd(string email, string password)
+        public async Task<int> UptPwd(string email, string password)
         {
             try
             {
@@ -128,7 +120,7 @@ namespace IOT.ETL.Api.Controllers
                 {
                     return -1;
                 }
-                var i = _usersIRepository.UptPwd(email, password);
+                var i = await _usersIRepository.UptPwd(email, password);
                 logger.Debug($"邮箱号：{email}，在" + DateTime.Now + "修改密码成功");
                 //返回
                 return i;
@@ -143,12 +135,13 @@ namespace IOT.ETL.Api.Controllers
         //验证邮箱是否已经注册,若没有怎发送邮箱验证码
         [HttpGet]
         [Route("/api/TestEmail")]
-        public int TestEmail(string email)
+        public async Task<int> TestEmail(string email)
         {
             try
             {
                 //获取所有数据  查询邮箱所在位置
-                var ss = _usersIRepository.GetUsers().FirstOrDefault(x => x.email.Equals(email));
+                var aa = await _usersIRepository.GetUsers();
+                var ss = aa.FirstOrDefault(x => x.email.Equals(email));
                 //判断是否为空
                 if (ss == null)
                 {
@@ -182,7 +175,7 @@ namespace IOT.ETL.Api.Controllers
         //验证验证码
         [HttpGet]
         [Route("/api/TestCode")]
-        public int TestCode(string email, string fcode)
+        public async Task<int> TestCode(string email, string fcode)
         {
             try
             {
@@ -225,11 +218,11 @@ namespace IOT.ETL.Api.Controllers
         //电话修改密码
         [Route("/api/UptPhone")]
         [HttpPost]
-        public int UptPhonw(string phone, string password)
+        public async Task<int> UptPhonw(string phone, string password)
         {
             try
             {
-                var i = _usersIRepository.UptPhone(phone, password);
+                var i = await _usersIRepository.UptPhone(phone, password);
                 logger.Debug($"手机号：{phone}，在" + DateTime.Now + "修改密码成功");
                 //返回
                 return i;
@@ -243,7 +236,7 @@ namespace IOT.ETL.Api.Controllers
 
         [HttpGet]
         [Route("/api/CallPhone")]
-        public int CallPhone(string phone)
+        public async Task<int> CallPhone(string phone)
         {
             string PostUrl = "http://106.ihuyi.com/webservice/sms.php?method=Submit";
             //登录“互亿无线网站”查看用户名 登录用户中心->验证码通知短信>产品总览->API接口信息->APIID
@@ -306,7 +299,7 @@ namespace IOT.ETL.Api.Controllers
         //验证验证码
         [HttpGet]
         [Route("/api/TestCodePhone")]
-        public int TestCodePhone(string phone, string fcode)
+        public async Task<int> TestCodePhone(string phone, string fcode)
         {
             try
             {

@@ -18,15 +18,12 @@ namespace IOT.ETL.Api.Controllers
             _sysmodulesRepository = sysmodulesRepository;
         }
 
-        /// <summary>
-        /// 显示
-        /// </summary>
-        /// <returns></returns>
+        // 显示
         [Route("/api/gotModules")]
         [HttpGet]
-        public IActionResult gotModules()
+        public async Task<IActionResult> gotModules()
         {
-            var ls =_sysmodulesRepository.GetSys_Modules ();
+            var ls = await _sysmodulesRepository.GetSys_Modules ();
             return Ok(new { data = ls });
         }
 

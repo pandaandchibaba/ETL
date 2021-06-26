@@ -10,10 +10,10 @@ namespace IOT.ETL.Repository.sys_role_engine
 {
     public class sysroleengineRepository : IsysroleengineRepository
     {
-        public string fromMane(string rid)
+        public async Task<string> fromMane(string rid)
         {
             string sql = $@"";
-            var query = DapperHelper.GetList<IOT.ETL.Model.sys_modules>(sql);
+            var query = await DapperHelper.GetList<IOT.ETL.Model.sys_modules>(sql);
             StringBuilder sb = new StringBuilder();
             foreach (var s in query)
             {
@@ -23,17 +23,17 @@ namespace IOT.ETL.Repository.sys_role_engine
             return arr;
         }
          
-        public int UptApp(string  rid, string modulesid)
+        public async Task<int> UptApp(string  rid, string modulesid)
         {
             int i = 0;
             //先删除此角色下边的所有权限
             string sql = $"delete from sys_role_engine where id='{rid}'";
-            DapperHelper.Execute(sql);
+            await DapperHelper.Execute(sql);
             string[] arr = modulesid.Split(',');
             foreach (var s in arr)
             {
                 string str = $"insert into sys_role_engine(rid,modules_id)values('{rid}',{s})";
-                i += DapperHelper.Execute(str);
+                i += await DapperHelper.Execute(str);
             }
             return i;
         }

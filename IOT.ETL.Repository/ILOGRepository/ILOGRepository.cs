@@ -46,7 +46,7 @@ namespace IOT.ETL.Repository.ILOGRepository
         }
 
         //添加
-        public int AddILOG(etl_data_engine a)
+        public async Task<int> AddILOG(etl_data_engine a)
         {
             try
             {
@@ -54,15 +54,17 @@ namespace IOT.ETL.Repository.ILOGRepository
                 a.create_by = us.name;
                 a.update_by = us.name;
                 string sql = $"insert into etl_data_engine values (UUID(),'{a.engine_name}','{a.engine_type_id}','{a.code_type}','{a.cl_name}',0,'{a.create_by}',now(),'{a.update_by}',now(),'222222')";
-                int i = DapperHelper.Execute(sql);
+                int i =await DapperHelper.Execute(sql);
                 if (i > 0)
                 {
-                    a = DapperHelper.GetList<Model.etl_data_engine>("select * from etl_data_engine order by create_time desc LIMIT 1").FirstOrDefault();
+                    var aa = await DapperHelper.GetList<Model.etl_data_engine>("select * from etl_data_engine order by create_time desc LIMIT 1");
+                    a = aa.FirstOrDefault();
+                    
                     //存入
                     list.Add(a);
                     rh.SetList(list, redisKey);
                     //不存在
-                    list2 = DapperHelper.GetList<IOT.ETL.Model.V_IOLG>("select * from V_IOLG");
+                    list2 = await DapperHelper.GetList<IOT.ETL.Model.V_IOLG>("select * from V_IOLG");
                     //存入
                     rh2.SetList(list2, redisKey2);
                     return 1;
@@ -81,12 +83,12 @@ namespace IOT.ETL.Repository.ILOGRepository
         }
 
         //删除
-        public int DelILOG(string id)
+        public async Task<int> DelILOG(string id)
         {
             try
             {
                 string sql = $"delete from etl_data_engine where id in ('{id}')";
-                int i = DapperHelper.Execute(sql);
+                int i =await DapperHelper.Execute(sql);
                 if (i > 0)
                 {
                     string[] arr = id.Split(',');
@@ -98,7 +100,7 @@ namespace IOT.ETL.Repository.ILOGRepository
                     //重新存入
                     rh.SetList(list, redisKey);
                     //不存在
-                    list2 = DapperHelper.GetList<IOT.ETL.Model.V_IOLG>("select * from V_IOLG");
+                    list2 = await DapperHelper.GetList<IOT.ETL.Model.V_IOLG>("select * from V_IOLG");
                     //存入
                     rh2.SetList(list2, redisKey2);
                 }
@@ -111,7 +113,7 @@ namespace IOT.ETL.Repository.ILOGRepository
         }
 
         //显示
-        public List<V_IOLG> ShowILOG()
+        public async Task<List<V_IOLG>> ShowILOG()
         {
             try
             {
@@ -119,7 +121,7 @@ namespace IOT.ETL.Repository.ILOGRepository
                 if (list2 == null || list2.Count == 0)
                 {
                     //不存在
-                    list2 = DapperHelper.GetList<IOT.ETL.Model.V_IOLG>("select * from V_IOLG");
+                    list2 = await DapperHelper.GetList<IOT.ETL.Model.V_IOLG>("select * from V_IOLG");
                     //存入
                     rh2.SetList(list2, redisKey2);
                 }
@@ -127,7 +129,7 @@ namespace IOT.ETL.Repository.ILOGRepository
                 if (list == null || list.Count == 0)
                 {
                     //不存在
-                    list = DapperHelper.GetList<IOT.ETL.Model.etl_data_engine>("select * from etl_data_engine");
+                    list = await DapperHelper.GetList<IOT.ETL.Model.etl_data_engine>("select * from etl_data_engine");
                     //存入
                     rh.SetList(list, redisKey);
                 }
@@ -142,21 +144,21 @@ namespace IOT.ETL.Repository.ILOGRepository
 
 
         //修改
-        public int UptILOG(etl_data_engine a)
+        public async Task<int> UptILOG(etl_data_engine a)
         {
             try
             {
                 Model.sys_user us = users.FirstOrDefault();
                 a.update_by = us.name;
                 string sql = $"update etl_data_engine set engine_name='{a.engine_name}',engine_type_id='{a.engine_type_id}',code_type='{a.code_type}',cl_name='{a.cl_name}',update_by='{a.update_by}' where id='{a.id}'";
-                int i = DapperHelper.Execute(sql);
+                int i = await DapperHelper.Execute(sql);
                 if (i > 0)
                 {
                     list[list.IndexOf(list.First(x=>x.id==a.id))] = a;
                     //重新存入
                     rh.SetList(list, redisKey);
                     //不存在
-                    list2 = DapperHelper.GetList<IOT.ETL.Model.V_IOLG>("select * from V_IOLG");
+                    list2 = await DapperHelper.GetList<IOT.ETL.Model.V_IOLG>("select * from V_IOLG");
                     //存入
                     rh2.SetList(list2, redisKey2);
                 }
