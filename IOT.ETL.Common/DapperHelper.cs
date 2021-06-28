@@ -7,6 +7,7 @@ using Dapper;
 using System.Data.SqlClient;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace IOT.ETL.Common
 {
@@ -191,6 +192,7 @@ namespace IOT.ETL.Common
                 throw;
             }
         }
+
         #region 获取MySql的数据
         /// <summary>
         /// DataTable
@@ -205,6 +207,23 @@ namespace IOT.ETL.Common
                 using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnMySql + dbName))
                 {
                     var reader = await db.QueryAsync(sql);
+                    int i = reader.Count();
+                    Random rd = new Random();
+                    if (i<10)
+                    {
+                        if (i>5)
+                        {
+                            reader = reader.Skip(rd.Next(0, i - 5)).Take(5);
+                        }
+                        else
+                        {
+                            reader = reader.Take(5);
+                        }
+                    }
+                    else
+                    {
+                        reader = reader.Take(10);
+                    }
                     return JsonConvert.SerializeObject(reader);
                 }
             }
