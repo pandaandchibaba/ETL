@@ -6,36 +6,26 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using System.Text;
+
 namespace IOT.ETL.Repository.sys_role_engine
 {
     public class sysroleengineRepository : IsysroleengineRepository
     {
-        public async Task<string> fromMane(string rid)
+        public Task<int> Adds(Model.sys_role_engine m)
         {
-            string sql = $@"";
-            var query = await DapperHelper.GetList<IOT.ETL.Model.sys_modules>(sql);
-            StringBuilder sb = new StringBuilder();
-            foreach (var s in query)
-            {
-                sb.Append(s.id).Append(',');
-            }
-            var arr = "["+sb.ToString().TrimEnd(',')+"]";
-            return arr;
+            string sql = $"insert into sys_user_role values('{m.id}','{m.role_id}','{m.modules_id}')";
+            return DapperHelper.Execute(sql);
         }
-         
-        public async Task<int> UptApp(string  rid, string modulesid)
+        public async Task<List<Model.sys_role_engine>> Uptft(string id)
         {
-            int i = 0;
-            //先删除此角色下边的所有权限
-            string sql = $"delete from sys_role_engine where id='{rid}'";
-            await DapperHelper.Execute(sql);
-            string[] arr = modulesid.Split(',');
-            foreach (var s in arr)
-            {
-                string str = $"insert into sys_role_engine(rid,modules_id)values('{rid}',{s})";
-                i += await DapperHelper.Execute(str);
-            }
-            return i;
+            string sql = $"select * from  sys_role_engine where id={id}";
+            return await DapperHelper.GetList<Model.sys_role_engine>(sql);
+        }
+
+        public async Task<int> Uptuser(Model.sys_role_engine a)
+        {
+            string sql = $"Update sys_role_engine set role_id='{a.role_id}',modules_id='{a.modules_id}' where id='{a.id}'";
+            return await DapperHelper.Execute(sql);
         }
     }
 }
