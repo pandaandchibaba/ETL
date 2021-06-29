@@ -25,12 +25,13 @@ using IOT.ETL.IRepository.sys_modules;
 using IOT.ETL.Repository.sys_modules;
 using IOT.ETL.Common;
 using IOT.ETL.IRepository.IDataAnalysisRepository;
-using IOT.ETL.IRepository.IDataAnalysisRepository;
 using IOT.ETL.IRepository.sys_role_engine;
 using IOT.ETL.Repository.sys_role_engine;
 
 using IOT.ETL.IRepository.Ietl_task_join_info;
 using IOT.ETL.Repository.etl_task_join_info;
+using IOT.ETL.IRepository.sys_user;
+using IOT.ETL.Repository.sys_user;
 
 namespace IOT.ETL.Api
 {
@@ -62,6 +63,7 @@ namespace IOT.ETL.Api
             services.AddSingleton<IsysmodulesRepository, sysmodulesRepository>();
             services.AddSingleton<Ietl_task_infoRepository, etl_task_infoRepository>();
             services.AddSingleton<Ietl_task_join_infoRepository, etl_task_join_infoRepository>();
+            services.AddSingleton<IsysUserRepository, sysUserRepository>();
             
             services.AddSingleton<IsysroleengineRepository, sysroleengineRepository>();
             #endregion

@@ -98,7 +98,7 @@ namespace IOT.ETL.Api.Controllers
         // 修改
         [Route("/api/UptSys_param")]
         [HttpPut]
-        public int UptSys_param([FromForm]IOT.ETL.Model.sys_param sys_Param)
+        public async Task<int> UptSys_param([FromForm]IOT.ETL.Model.sys_param sys_Param)
         {
             int i = await _sys_ParamIRepository.UptSys_param(sys_Param);
             //判断是否添加成功  添加成功写入日志

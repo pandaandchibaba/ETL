@@ -20,6 +20,7 @@ namespace IOT.ETL.Repository.sys_user
         // 添加
         public async Task<int> insertUser(Model.sys_user a)
         {
+            a.id = Guid.NewGuid().ToString();
             string sql = $"insert into sys_user values('{a.id}','{a.name}','{a.email}','{a.phone}','{a.img_url}','{a.username}','{a.password}','{a.is_admin}','{a.status}','{a.revision}','{a.create_by}','{a.create_time}','{a.update_by}','{a.UPDATED_TIME}')";
             return await DapperHelper.Execute(sql);
         }

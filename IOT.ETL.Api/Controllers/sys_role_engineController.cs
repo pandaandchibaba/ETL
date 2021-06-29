@@ -17,20 +17,27 @@ namespace IOT.ETL.Api.Controllers
         {
             _sysroleengineRepository = sysroleengineRepository;
         }
-        [HttpGet]
+        
         [Route("/api/AutUpt")]
-        public async Task<int> AutUpt(string rid, string modulesid)
+        [HttpPost]
+        public async Task<int> AutUpt(Model.sys_role_engine a)
         {
-            int i = 0;
-            i += await _sysroleengineRepository.UptApp(rid, modulesid);
+            int i = await _sysroleengineRepository.Uptuser(a);        
+            return i;
+        }
+        [Route("/api/AutAdd")]
+        [HttpPost]
+        public async Task<int> AutAdd(Model.sys_role_engine m)
+        {
+            int i = await _sysroleengineRepository.Adds(m);
             return i;
         }
 
         [HttpGet]
         [Route("/api/GetAut")]
-        public async Task<IActionResult> GetAut(string rid)
+        public async Task<IActionResult> GetAut(string id)
         {
-            var result = await _sysroleengineRepository.fromMane(rid);
+            var result = await _sysroleengineRepository.Uptft(id);
 
             return Ok(result);
         }

@@ -10,6 +10,6 @@ namespace IOT.ETL.Model
     {
         public string id { get; set; }
         public string role_id { get; set; }
-        public string module_id { get; set; }
+        public string modules_id { get; set; }
     }
 }
