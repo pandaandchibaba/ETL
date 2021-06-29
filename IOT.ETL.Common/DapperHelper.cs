@@ -215,6 +215,32 @@ namespace IOT.ETL.Common
             }
         }
         #endregion
+        /// <summary>
+        /// 测试连接字符串是否正确
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <returns></returns>
+        public static int Ceshi(string Conn)
+        {
+            try
+            {
+                using (IDbConnection con = new MySqlConnection(Conn))
+                {
+                    dynamic n = con.Query("select uuid()");
+                    return 1;
+                }
+            }
+            catch (Exception)
+            {
+                return 0;
+                throw;
+            }
+        }
+
+
+
+
+
     }
 }
 
