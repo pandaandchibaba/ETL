@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,18 +25,19 @@ namespace IOT.ETL.Api.Controllers
         #region 根据不同的数据库显示不同的表数据
         // 根据不同的数据库显示不同的表数据
         [HttpGet("/api/GetTable")]
-        public async Task<string> GetTable(string sql, string dbName, string code)
+        public async Task<IActionResult> GetTable(string sql, string dbName, string code)
         {
             try
             {
-                return await _dataAnalysis.GetDateTable(sql, dbName, code);
+                var json = await _dataAnalysis.GetDateTable(sql, dbName, code);
+                return Ok(new { json = json.Json, time = json.Time });
             }
             catch (Exception ex)  //捕捉异常
             {
                 logger.Debug(ex.Message);
                 throw;
             }
-            
+
         }
         #endregion
 
