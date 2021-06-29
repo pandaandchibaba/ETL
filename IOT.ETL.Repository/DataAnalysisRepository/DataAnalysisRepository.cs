@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using IOT.ETL.Common;
 using IOT.ETL.Model;
+using System.Diagnostics;
 
 namespace IOT.ETL.Repository.DataAnalysisRepository
 {
@@ -163,16 +164,24 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
         /// <param name="sql"></param>
         /// <param name="dbName"></param>
         /// <returns></returns>
-        public async Task<string> GetDateTable(string sql, string dbName,string code)
+        public async Task<JsonTable> GetDateTable(string sql, string dbName,string code)
         {
+            JsonTable jt = new JsonTable();  //返回对象
+            Stopwatch sw = new Stopwatch();  //实例化秒表
             if (code=="MySql")  //mysql
             {
-                return await DapperHelper.GetMySqlDate(sql, dbName);
+                sw.Start();
+                jt.Json= await DapperHelper.GetMySqlDate(sql, dbName);
+                sw.Stop();
             }
             else  //sql
             {
-                return await SqlHelper.GetSqlDate(sql, dbName);
+                sw.Start();
+                jt.Json = await SqlHelper.GetSqlDate(sql, dbName);
+                sw.Stop();
             }
+            jt.Time = sw.ElapsedMilliseconds / 1000.0 + "秒";  //执行时间
+            return jt;
         }
         #endregion
     }

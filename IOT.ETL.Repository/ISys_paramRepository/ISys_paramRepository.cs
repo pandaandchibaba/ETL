@@ -66,12 +66,12 @@ namespace IOT.ETL.Repository.ISys_paramRepository
         {
             string sql = "SELECT *FROM sys_param ORDER BY order_by;";
             List<Model.sys_param> list = await DapperHelper.GetList<Model.sys_param>(sql);
-            List<Dictionary<string, object>> Alltree = await Recursion(list,"0");
+            List<Dictionary<string, object>> Alltree = Recursion(list,"0");
             return Alltree;
         }
 
         // 递归方法
-        public async Task<List<Dictionary<string, object>>> Recursion(List<Model.sys_param> lst, string pid) 
+        public List<Dictionary<string, object>> Recursion(List<Model.sys_param> lst, string pid) 
         {
             //字典集合
             List<Dictionary<string, object>> json = new List<Dictionary<string, object>>();
