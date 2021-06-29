@@ -61,7 +61,7 @@ namespace IOT.ETL.Api
             services.AddSingleton<UsersIRepository, UsersRepository>();
             services.AddSingleton<IDataAnalysisRepository, DataAnalysisRepository>();
 
-            services.AddSingleton<IBI_DataAnalysisRepositorys, BI_DataAnalysisRepository>();
+            services.AddScoped<IBI_DataAnalysisRepositorys, BI_DataAnalysisRepository>();
             services.AddSingleton<ISys_paramIRepository, ISys_paramRepository>();
             services.AddSingleton<IsysroleRespoditory, sysroleRespoditory>();
             services.AddSingleton<IsysmodulesRepository, sysmodulesRepository>();

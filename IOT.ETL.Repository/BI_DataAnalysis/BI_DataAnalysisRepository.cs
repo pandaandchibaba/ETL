@@ -32,16 +32,16 @@ namespace IOT.ETL.Repository.BI_DataAnalysis
         }
 
         public async Task<List<GetDataBases>> GetDatabaseName(int flag)
-        {            
+        {
             string sql = "";
             string name = "";
-            if (flag==1)
+            if (flag == 1)
             {
                 sql = " SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA; ";
 
                 dataredisKey = "dataredisKey_MySql";
             }
-            else if(flag==2)
+            else if (flag == 2)
             {
                 sql = " SELECT NAME SCHEMA_NAME FROM MASTER.DBO.SYSDATABASES ORDER BY NAME ";
                 name = "master";
