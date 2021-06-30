@@ -1,4 +1,5 @@
 ﻿using IOT.ETL.Common;
+using IOT.ETL.IRepository.Etl_task_join_info;
 using IOT.ETL.Model;
 using System;
 using System.Collections.Generic;
@@ -6,11 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using IOT.ETL.IRepository.Ietl_task_join_info;
 
-namespace IOT.ETL.Repository.etl_task_join_info
+namespace IOT.ETL.Repository.Etl_task_join_info
 {
-    public class etl_task_join_infoRepository : Ietl_task_join_infoRepository
+    public class Etl_task_join_infoRepository : Etl_task_join_infoIRepository
     {
         string cun1 = "joinA";
         string cun2 = "joinB";
@@ -23,8 +23,7 @@ namespace IOT.ETL.Repository.etl_task_join_info
         //缓存实例化  存放SQL语句
         string sqlAll = "mainsql";
         RedisHelper<string> rds = new RedisHelper<string>();
-
-        public etl_task_join_infoRepository()
+        public Etl_task_join_infoRepository()
         {
             joinlsA = rh.GetList(cun1);
             joinlsB = rh.GetList(cun2);
@@ -42,7 +41,7 @@ namespace IOT.ETL.Repository.etl_task_join_info
             return i;
         }
         //获取到第二个表的数据
-        public async Task<int> AddInputB(IOT.ETL.Model.etl_task_input_info ta)
+        public async Task<int> AddInputB(etl_task_input_info ta)
         {
             int i = 0;
             List<IOT.ETL.Model.etl_task_join_info> a = JsonConvert.DeserializeObject<List<IOT.ETL.Model.etl_task_join_info>>(ta.ToString());
@@ -54,7 +53,7 @@ namespace IOT.ETL.Repository.etl_task_join_info
             return i;
         }
         //拼接sql语句
-         public async Task<int> AddJoin(IOT.ETL.Model.etl_task_join_info jo)
+        public async Task<int> AddJoin(etl_task_join_info jo)
         {
             int i = 0;
 
@@ -104,12 +103,12 @@ namespace IOT.ETL.Repository.etl_task_join_info
         }
 
         //根据任务ID查询出其任务设计的相关信息   显示出对应字段 
-        public async Task<List<etl_task_input_info>> FanFieldIDAsync(string id)
+        public async Task<List<IOT.ETL.Model.etl_task_input_info>> FanFieldID(string id)
         {
             string sql = $"select table_name,table_as_name from etl_task_input_info where 1=1";
             if (!string.IsNullOrEmpty(id))
             {
-                sql += $" task_id = '{id}'";
+                sql += $" and task_id = '{id}'";
             }
             return await DapperHelper.GetList<IOT.ETL.Model.etl_task_input_info>(sql);
         }
@@ -147,13 +146,13 @@ namespace IOT.ETL.Repository.etl_task_join_info
             string sql = $"select * from etl_task_VModel where 1=1";
             if (!string.IsNullOrEmpty(id))
             {
-                sql += $" id in ('{id}')";
+                sql += $" and id in ('{id}')";
             }
             return await DapperHelper.GetList<IOT.ETL.Model.etl_task_VModel>(sql);
         }
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         //点击执行
-       public async Task<int> ExecuteAllSql(string id,string name)
+        public async Task<int> ExecuteAllSql(string id,string name)
         {
             int j = 0;
             //根据ID查询出指定任务   在找到指定任务下的执行次数
@@ -170,11 +169,11 @@ namespace IOT.ETL.Repository.etl_task_join_info
                 }
             if (j>0)
             {
-                string sqlupt = $"update etl_task_info set success_insert_total+={j}  where Id = '{id}'";
+                string sqlupt = $"update etl_task_info set success_insert_total=success_insert_total+{j}  where Id = '{id}'";
                 int q = await DapperHelper.Execute(sqlupt);
                 if (q>0)
                 {
-                    string sqlupts = $"update etl_task_info set success_update_total+{q}  where Id = '{id}'";
+                    string sqlupts = $"update etl_task_info set success_update_total=success_update_total+{q}  where Id = '{id}'";
                     int w = await DapperHelper.Execute(sqlupts);
                   
                 }
@@ -185,6 +184,7 @@ namespace IOT.ETL.Repository.etl_task_join_info
             return j;
             
         }
+
 
 
     }

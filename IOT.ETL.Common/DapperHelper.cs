@@ -135,7 +135,7 @@ namespace IOT.ETL.Common
         {
             try
             {
-                if (flag == 1)
+                if (flag != 1)
                 {
                     string conn = ConfigurationManager.ConnNameSql + name;
                     using (IDbConnection db = new SqlConnection(conn))
