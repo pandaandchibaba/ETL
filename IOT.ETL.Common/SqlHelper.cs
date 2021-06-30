@@ -19,13 +19,22 @@ namespace IOT.ETL.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public static List<T> GetList<T>(string sql, string dbName)
+        public static async Task<List<T>> GetList<T>(string sql, string dbName)
         {
             using (IDbConnection conn = new SqlConnection(ConfigurationManager.ConnSql + dbName))
             {
-                return conn.Query<T>(sql).ToList();
+                try
+                {
+                    return (List<T>)await conn.QueryAsync<T>(sql);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
             }
-        } 
+        }
         #endregion
 
         #region 获取Sql的数据
