@@ -14,7 +14,7 @@ namespace IOT.ETL.Common
         public readonly static IConfiguration Configuration;
         static ConfigurationManager()
         {
-            Configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", true).Build();
+            Configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json",true).Build();
         }
         public static string Conn
         {
