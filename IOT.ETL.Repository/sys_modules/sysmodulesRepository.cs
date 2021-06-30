@@ -16,7 +16,7 @@ namespace IOT.ETL.Repository.sys_modules
             string sql = "select * from sys_modules";
             //获取所有的分类
             List<Model.sys_modules> lst =await DapperHelper.GetList<Model.sys_modules>(sql);
-            List<Dictionary<string, object>> result = await Recursion(lst,"0");
+            List<Dictionary<string, object>> result = await Recursion(lst,"");
             return result;
         }
         /// <summary>

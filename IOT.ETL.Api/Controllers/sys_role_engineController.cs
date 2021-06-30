@@ -26,7 +26,7 @@ namespace IOT.ETL.Api.Controllers
         }
         [Route("/api/AutAdd")]
         [HttpPost]
-        public async Task<int> AutAdd(Model.sys_role_engine m)
+        public async Task<int> AutAdd([FromForm]Model.sys_role_engine m)
         {
             return await _sysroleengineRepository.Adds(m);
         }
@@ -40,10 +40,10 @@ namespace IOT.ETL.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("/api/Getcha")]
         public async Task<IActionResult> Getcha(string id)
-        {
+                     {
             object ls = await _sysroleengineRepository.cha(id);
             if (ls == null)
             {
