@@ -21,10 +21,6 @@ namespace IOT.ETL.Repository.etl_task_info
             lt = rd.GetList(redisKey);//存放
         }
 
-        public async Task<List<T>> dbtable<T>()
-        {
-            throw new NotImplementedException();
-        }
 
         /// 删除
         public async Task<int> Deletl_Task_Infos(string ids)

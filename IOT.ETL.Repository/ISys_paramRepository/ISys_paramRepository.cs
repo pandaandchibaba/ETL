@@ -43,7 +43,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
                 int i = await DapperHelper.Execute(sql);
                 if (i > 0)
                 {
-                    var aa =await DapperHelper.GetList<Model.sys_param>("SELECT *FROM sys_param ORDER BY create_time DESC LIMIT 1");
+                    var aa = await DapperHelper.GetList<Model.sys_param>("SELECT *FROM sys_param ORDER BY create_time DESC LIMIT 1");
                     sys_Param = aa.FirstOrDefault();
                     lst.Add(sys_Param);
                     rp.SetList(lst, redisKey);
@@ -62,16 +62,16 @@ namespace IOT.ETL.Repository.ISys_paramRepository
 
         }
 
-        public async Task<List<Dictionary<string, object>>>  BindParent()
+        public async Task<List<Dictionary<string, object>>> BindParent()
         {
             string sql = "SELECT *FROM sys_param ORDER BY order_by;";
             List<Model.sys_param> list = await DapperHelper.GetList<Model.sys_param>(sql);
-            List<Dictionary<string, object>> Alltree = Recursion(list,"0");
+            List<Dictionary<string, object>> Alltree = Recursion(list, "0");
             return Alltree;
         }
 
         // 递归方法
-        public List<Dictionary<string, object>> Recursion(List<Model.sys_param> lst, string pid) 
+        public List<Dictionary<string, object>> Recursion(List<Model.sys_param> lst, string pid)
         {
             //字典集合
             List<Dictionary<string, object>> json = new List<Dictionary<string, object>>();
@@ -83,7 +83,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
                 Dictionary<string, object> jsonsub = new Dictionary<string, object>();
                 jsonsub.Add("value", item.Id);
                 jsonsub.Add("label", item.Name);
-                if (lst.Count(x=>x.Pid==item.Id)>0)
+                if (lst.Count(x => x.Pid == item.Id) > 0)
                 {
                     jsonsub.Add("children", Recursion(lst, item.Id));
                 }
@@ -111,6 +111,7 @@ namespace IOT.ETL.Repository.ISys_paramRepository
                 rp.SetList(lst, redisKey);
             }
             return i;
+
         }
 
         // 修改

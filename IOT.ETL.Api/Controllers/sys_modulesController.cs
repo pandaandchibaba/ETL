@@ -23,8 +23,16 @@ namespace IOT.ETL.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> gotModules()
         {
-            var ls = await _sysmodulesRepository.GetSys_Modules ();
+            var ls = await _sysmodulesRepository.GetSys_Modules();
             return Ok(new { data = ls });
+        }
+
+        [Route("/api/Bindtypes")]
+        [HttpGet]
+        public async Task<IActionResult> Bindtypes()
+        {
+            List<Dictionary<string, object>> lst =await _sysmodulesRepository.BindType();
+            return Ok(lst);
         }
 
     }

@@ -60,7 +60,7 @@ namespace IOT.ETL.Api.Controllers
         // 修改
         [Route("/api/UptUsers")]
         [HttpPost]
-        public async Task<int> UptUsers(Model.sys_user a)
+        public async Task<int> UptUsers([FromForm]Model.sys_user a)
         {
             int ls = await _serviceProvider.Uptuser(a);
             return ls;

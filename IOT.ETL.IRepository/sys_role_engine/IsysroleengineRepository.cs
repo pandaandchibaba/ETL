@@ -9,8 +9,10 @@ namespace IOT.ETL.IRepository.sys_role_engine
    public interface IsysroleengineRepository
     {
         //权限
-        Task<int> UptApp(string rid,string modulesid);
-
-        Task<string> fromMane(string rid);
+        Task<int> Uptuser(Model.sys_role_engine a);
+        Task<List<Model.sys_role_engine>> Uptft(string id);
+        Task<int> Adds(Model.sys_role_engine m);
+       Task <object> cha(string id);
+        
     }
 }
