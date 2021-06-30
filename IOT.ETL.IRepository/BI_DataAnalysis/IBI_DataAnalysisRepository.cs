@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IOT.ETL.IRepository.BI_DataAnalysis
 {
-    public interface IBI_DataAnalysisRepositorys
+    public interface IBI_DataAnalysisRepositor
     {
         /// <summary>
         /// 根据数据库名称获取其中表数据MySql

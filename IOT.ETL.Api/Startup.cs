@@ -29,11 +29,14 @@ using IOT.ETL.IRepository.IDataAnalysisRepository;
 using IOT.ETL.IRepository.sys_role_engine;
 using IOT.ETL.Repository.sys_role_engine;
 
-using IOT.ETL.IRepository.Ietl_task_join_info;
-using IOT.ETL.Repository.etl_task_join_info;
+
 using IOT.ETL.IRepository.BI_DataAnalysis;
 using IOT.ETL.IRepository.IdatasourceRepository;
 using IOT.ETL.Repository.datasourceRepository;
+using IOT.ETL.IRepository.Etl_task_join_info;
+using IOT.ETL.Repository.Etl_task_join_info;
+using IOT.ETL.IRepository.TaskIRepository;
+using IOT.ETL.Repository.TaskRepository;
 
 namespace IOT.ETL.Api
 {
@@ -61,15 +64,19 @@ namespace IOT.ETL.Api
             services.AddSingleton<UsersIRepository, UsersRepository>();
             services.AddSingleton<IDataAnalysisRepository, DataAnalysisRepository>();
 
-            services.AddScoped<IBI_DataAnalysisRepositorys, BI_DataAnalysisRepository>();
+
             services.AddSingleton<ISys_paramIRepository, ISys_paramRepository>();
             services.AddSingleton<IsysroleRespoditory, sysroleRespoditory>();
             services.AddSingleton<IsysmodulesRepository, sysmodulesRepository>();
             services.AddSingleton<Ietl_task_infoRepository, etl_task_infoRepository>();
-            services.AddSingleton<Ietl_task_join_infoRepository, etl_task_join_infoRepository>();
+
             services.AddSingleton<IdatasourceRepository, DatasourceRepository>();
 
             services.AddSingleton<IsysroleengineRepository, sysroleengineRepository>();
+
+            services.AddSingleton<IBI_DataAnalysisRepositor, BI_DataAnalysisRepository>();
+            services.AddSingleton<Etl_task_join_infoIRepository, Etl_task_join_infoRepository>();
+            services.AddSingleton<TaskIRepository, TaskRepository>();
             #endregion
 
             var section = Configuration.GetSection("Redis:Default");

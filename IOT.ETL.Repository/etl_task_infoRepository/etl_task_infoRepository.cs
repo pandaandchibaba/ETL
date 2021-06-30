@@ -121,14 +121,6 @@ namespace IOT.ETL.Repository.etl_task_info
             }
         }
 
-        public async Task<int> insertsql()
-        {
-            throw new NotImplementedException();
-        }
 
-        public async Task<List<myTable>> myTables()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

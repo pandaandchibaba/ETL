@@ -1,10 +1,7 @@
-﻿
-using IOT.ETL.IRepository.BI_DataAnalysis;
-using IOT.ETL.IRepository.IDataAnalysisRepository;
-using IOT.ETL.IRepository.Ietl_task_join_info;
+﻿using IOT.ETL.IRepository.BI_DataAnalysis;
+using IOT.ETL.IRepository.Etl_task_join_info;
 using IOT.ETL.Model;
-using IOT.ETL.Repository.etl_task_join_info;
-
+using IOT.ETL.Repository.Etl_task_join_info;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
@@ -13,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace IOT.ETL.Api.Controllers
 {
@@ -23,18 +21,16 @@ namespace IOT.ETL.Api.Controllers
     }
     [Route("api/[controller]")]
     [ApiController]
-    public class etl_task_join_infoController : ControllerBase
+    public class Etl_task_join_infoController : ControllerBase
     {
         Logger logger = LogManager.GetCurrentClassLogger();
-        private readonly Ietl_task_join_infoRepository _etl_Task_Join_InfoRepository;
-        private readonly IBI_DataAnalysisRepositorys  _bI_DataAnalysisRepositorys;
-
-        public etl_task_join_infoController(Ietl_task_join_infoRepository etl_Task_Join_InfoRepository, IBI_DataAnalysisRepositorys iBI_DataAnalysisRepositor)
+        private readonly IBI_DataAnalysisRepositor _iBI_DataAnalysisRepositor;
+        private readonly Etl_task_join_infoIRepository _etl_Task_Join_InfoRepository;
+        public Etl_task_join_infoController(Etl_task_join_infoIRepository etl_Task_Join_InfoRepository, IBI_DataAnalysisRepositor iBI_DataAnalysisRepositor)
         {
             _etl_Task_Join_InfoRepository = etl_Task_Join_InfoRepository;
-            _bI_DataAnalysisRepositorys = iBI_DataAnalysisRepositor;
+            _iBI_DataAnalysisRepositor = iBI_DataAnalysisRepositor;
         }
-
         [HttpPost]
         [Route("/api/AddInputA")]
         //获取到第一个表的数据
@@ -105,7 +101,7 @@ namespace IOT.ETL.Api.Controllers
         //根据任务ID查询出其任务设计的相关信息   显示出对应字段 
         public async Task<OkObjectResult> FanFieldID(string id = "")
         {
-            return Ok(new { msg = "", code = 0, data = await _etl_Task_Join_InfoRepository.FanFieldIDAsync(id) });
+            return Ok(new { msg = "", code = 0, data = await _etl_Task_Join_InfoRepository.FanFieldID(id) });
         }
         [HttpGet]
         [Route("/api/SelectBind")]
@@ -177,8 +173,8 @@ namespace IOT.ETL.Api.Controllers
             try
             {
                 //获取MySql全部数据
-                List<Model.GetDataBases> getDataBases = await _bI_DataAnalysisRepositorys.GetDatabaseName(1);
-                List<Model.GetDataBases> getDataBasesSql = await _bI_DataAnalysisRepositorys.GetDatabaseName(2);
+               List<Model.GetDataBases> getDataBases = await _iBI_DataAnalysisRepositor.GetDatabaseName(1);
+               List<Model.GetDataBases> getDataBasesSql = await _iBI_DataAnalysisRepositor.GetDatabaseName(2);
 
                 //用于拼接的字符串
                 StringBuilder builder = new StringBuilder();
@@ -198,7 +194,7 @@ namespace IOT.ETL.Api.Controllers
                     builder.Append(",label:'" + getDataBases[i].SCHEMA_NAME + "'");
 
 
-                    List<Model.GetTables> getTables = await _bI_DataAnalysisRepositorys.GetTableName(getDataBases[i].SCHEMA_NAME, 1);
+                    List<Model.GetTables> getTables = await _iBI_DataAnalysisRepositor.GetTableName(getDataBases[i].SCHEMA_NAME, 1);
                     builder.Append(",children:[");
 
                     //MySql第二层循环 拼接数据库下的表名
@@ -220,30 +216,30 @@ namespace IOT.ETL.Api.Controllers
                 builder.Append(",children:[");
 
                 //SqlServer第一层循环 拼接数据库名
-                for (int i = 0; i < getDataBasesSql.Count; i++)
-                {
-                    Random rd = new Random();
-                    int c = rd.Next();
-                    builder.Append("{");
-                    builder.Append("id:" + $"{c}");
-                    builder.Append(",label:'" + getDataBasesSql[i].SCHEMA_NAME + "'");
+                //for (int i = 0; i < getDataBasesSql.Count; i++)
+                //{
+                //    Random rd = new Random();
+                //    int c = rd.Next();
+                //    builder.Append("{");
+                //    builder.Append("id:" + $"{c}");
+                //    builder.Append(",label:'" + getDataBasesSql[i].SCHEMA_NAME + "'");
 
 
-                    List<Model.GetTables> getTablesSql = await _bI_DataAnalysisRepositorys.GetTableName(getDataBasesSql[i].SCHEMA_NAME, 2);
-                    builder.Append(",children:[");
+                //    List<Model.GetTables> getTablesSql = await _iBI_DataAnalysisRepositor.GetTableName(getDataBasesSql[i].SCHEMA_NAME, 2);
+                //    builder.Append(",children:[");
 
-                    //SqlServer第二层循环 拼接数据库下的表名
-                    for (int j = 0; j < getTablesSql.Count; j++)
-                    {
-                        int d = rd.Next();
+                //    SqlServer第二层循环 拼接数据库下的表名
+                //    for (int j = 0; j < getTablesSql.Count; j++)
+                //    {
+                //        int d = rd.Next();
 
-                        builder.Append("{id:" + $"{d}");
-                        builder.Append(",label:'" + getTablesSql[j].Table_Name + "'},");
-                    }
+                //        builder.Append("{id:" + $"{d}");
+                //        builder.Append(",label:'" + getTablesSql[j].Table_Name + "'},");
+                //    }
 
-                    builder.Append("]},");
+                //    builder.Append("]},");
 
-                }
+                //}
                 builder.Append("]},");
 
 
