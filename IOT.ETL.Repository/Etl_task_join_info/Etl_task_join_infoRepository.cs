@@ -169,11 +169,11 @@ namespace IOT.ETL.Repository.Etl_task_join_info
                 }
             if (j>0)
             {
-                string sqlupt = $"update etl_task_info set success_insert_total+={j}  where Id = '{id}'";
+                string sqlupt = $"update etl_task_info set success_insert_total=success_insert_total+{j}  where Id = '{id}'";
                 int q = await DapperHelper.Execute(sqlupt);
                 if (q>0)
                 {
-                    string sqlupts = $"update etl_task_info set success_update_total+{q}  where Id = '{id}'";
+                    string sqlupts = $"update etl_task_info set success_update_total=success_update_total+{q}  where Id = '{id}'";
                     int w = await DapperHelper.Execute(sqlupts);
                   
                 }
