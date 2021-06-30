@@ -117,7 +117,7 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
             if (lstdb == null || lstdb.Count == 0)
             {
                 //存入缓存
-                lstdb = SqlHelper.GetList<SqlDataBase>("select name,dbid from sysdatabases", "master");
+                lstdb = await SqlHelper.GetList<SqlDataBase>("select name,dbid from sysdatabases", "master");
                 sdbH.SetList(lstdb, sqlDBkey);
             }
             //存放mysql数据库节点
@@ -130,7 +130,7 @@ namespace IOT.ETL.Repository.DataAnalysisRepository
                 dbDic.Add("label", db.name);
                 dbDic.Add("floor", 2);
                 //该数据库下的表
-                List<SqlTable> lstDbTb = SqlHelper.GetList<SqlTable>("select name from sysobjects where xtype='U'", db.name);
+                List<SqlTable> lstDbTb =await SqlHelper.GetList<SqlTable>("select name from sysobjects where xtype='U'", db.name);
                 //存放mysql数据表节点
                 List<Dictionary<string, object>> treeMytb = new List<Dictionary<string, object>>();
                 foreach (var tb in lstDbTb)

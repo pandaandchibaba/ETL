@@ -18,7 +18,7 @@ namespace IOT.ETL.Repository.etl_task_join_info
         RedisHelper<Model.etl_task_join_info> rh = new RedisHelper<Model.etl_task_join_info>();
         List<IOT.ETL.Model.etl_task_join_info> joinlsA =new List<Model.etl_task_join_info>();
         List<IOT.ETL.Model.etl_task_join_info> joinlsB = new List<Model.etl_task_join_info>();
-
+        RedisHelper<IOT.ETL.Model.etl_task_info> rhh = new RedisHelper<Model.etl_task_info>();
 
         //缓存实例化  存放SQL语句
         string sqlAll = "mainsql";
@@ -168,7 +168,21 @@ namespace IOT.ETL.Repository.etl_task_join_info
                 {
                     j += await DapperHelper.Execute_plan(sql, name);
                 }
-                return j;
+            if (j>0)
+            {
+                string sqlupt = $"update etl_task_info set success_insert_total+={j}  where Id = '{id}'";
+                int q = await DapperHelper.Execute(sqlupt);
+                if (q>0)
+                {
+                    string sqlupts = $"update etl_task_info set success_update_total+{q}  where Id = '{id}'";
+                    int w = await DapperHelper.Execute(sqlupts);
+                  
+                }
+            }
+            string sqltable = $"select * from etl_task_info";
+            List<IOT.ETL.Model.etl_task_info> joinls = await DapperHelper.GetList<Model.etl_task_info>(sql);
+            rhh.SetList(joinls, "strTask");
+            return j;
             
         }
 
