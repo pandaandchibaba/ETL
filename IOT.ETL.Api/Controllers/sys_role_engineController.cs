@@ -22,15 +22,13 @@ namespace IOT.ETL.Api.Controllers
         [HttpPost]
         public async Task<int> AutUpt(Model.sys_role_engine a)
         {
-            int i = await _sysroleengineRepository.Uptuser(a);        
-            return i;
+            return await _sysroleengineRepository.Uptuser(a);
         }
         [Route("/api/AutAdd")]
         [HttpPost]
         public async Task<int> AutAdd(Model.sys_role_engine m)
         {
-            int i = await _sysroleengineRepository.Adds(m);
-            return i;
+            return await _sysroleengineRepository.Adds(m);
         }
 
         [HttpGet]
@@ -40,6 +38,23 @@ namespace IOT.ETL.Api.Controllers
             var result = await _sysroleengineRepository.Uptft(id);
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/Getcha")]
+        public async Task<IActionResult> Getcha(string id)
+        {
+            object ls = await _sysroleengineRepository.cha(id);
+            if (ls == null)
+            {
+                return Ok(-1);
+            }
+            else
+            {
+                string ss = ls.ToString();
+                string[] arr = ss.Split(',');
+                return Ok(arr);
+            }
         }
 
     }

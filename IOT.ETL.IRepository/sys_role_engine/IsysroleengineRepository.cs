@@ -12,6 +12,7 @@ namespace IOT.ETL.IRepository.sys_role_engine
         Task<int> Uptuser(Model.sys_role_engine a);
         Task<List<Model.sys_role_engine>> Uptft(string id);
         Task<int> Adds(Model.sys_role_engine m);
+       Task <object> cha(string id);
         
     }
 }
